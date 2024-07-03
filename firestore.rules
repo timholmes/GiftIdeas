@@ -5,22 +5,22 @@ rules_version = '2';
 // request.auth.token.email - authentication token of the person trying to access the data
 
 
+
 service cloud.firestore {
-
   match /databases/{database}/documents {
-      
 
-    // I can read all my documents if I am logged in
-    match /users/{email}/ideas/{document=**} {
-      
-      allow read, write: if loggedInAndMine(email);
-      allow read: if request.auth != null && exists(/databases/$(database)/documents/users/aaa/canView)
+    function loggedInAndMine(email) {
+      return request.auth.token != null && request.auth.token.email == email
     }
 
+    function canViewPermissionGranted(email) {
+      return request.auth.token.email in get(/databases/$(database)/documents/users/$(email)).data.canView
+    }
+
+    match /users/{email}/ideas/{document=**} {
+      allow read: if loggedInAndMine(email);
+      allow read: if canViewPermissionGranted(email)
+    }
   }
 
-}
-
-function loggedInAndMine(pathEmail) {
-  return request.auth != null && request.auth.token.email == pathEmail
 }

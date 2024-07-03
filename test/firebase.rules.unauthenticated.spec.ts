@@ -11,9 +11,6 @@ const FIREBASE_JSON = resolve(__dirname, '../firebase.json');
 
 beforeAll(async () => {
     testEnv = await setupFirestore();
-});
-
-beforeEach(async () => {
     await testEnv.clearFirestore();
 });
 
