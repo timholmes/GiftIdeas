@@ -20,20 +20,20 @@ export default function SignIn({ route, navigation}: any) {
 
   useEffect(() => {
     attemptReSignIn();
-    console.log('sign in');
+    console.log('SignIn: setup');
   }, [])
 
   async function attemptReSignIn() {
     setState({ ...initialState, attemptingReSignin: true });
 
     if (await GoogleSignin.isSignedIn()) {
-      console.log('Google - attempting re-signin.');
+      console.log('SignIn: Google - attempting re-signin.');
 
       let googleUser: GoogleUser | null;
       try {
         googleUser = await GoogleSignin.getCurrentUser();
       } catch (e) {
-        console.error(`Error getting current user.`)
+        console.error(`SignIn: Error getting current user.`)
         setState({ ...initialState, attemptingReSignin: false, reSignInSuccess: false });
         return;
       }
@@ -47,7 +47,7 @@ export default function SignIn({ route, navigation}: any) {
 
       const user: User = buildUserFromGoogleUser(googleUser);
       
-      console.log('Google - re-signin success.');
+      console.log('SignIn: Google - re-signin success.');
       DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: true, error: null, userInfo: user });
     }
 
@@ -55,7 +55,6 @@ export default function SignIn({ route, navigation}: any) {
   }
 
   async function signIn() {
-
     let googleUser: GoogleUser | null = null;
     try {
       googleUser = await GoogleSignin.signIn();
@@ -67,7 +66,7 @@ export default function SignIn({ route, navigation}: any) {
         return;
       }
       
-      console.log('There was an error signing in.', error.message);
+      console.log('SignIn: There was an error signing in.', error.message);
       DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: false, error: error});
     }
 

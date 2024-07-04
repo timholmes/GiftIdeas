@@ -16,16 +16,16 @@ export default function SignInStub() {
         } catch (error: any) {
             if (error.code == 'auth/invalid-credential') {
                 // setState({ ...initialState, userMessage: 'Session expired, you will need to login again.' });
-                console.log('ID token is expired.  Sending to sign in page.');
+                console.log('SignInStub: ID token is expired.  Sending to sign in page.');
                 DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: false });
               } else if (error.code == 'auth/network-request-failed') {
                 DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: false });
               }
-              console.error('Firebase login failed..', error);
+              console.error('SignInStub: Firebase login failed..', error);
               return;
         }
 
-        console.log("Stub signin success");
+        console.log("SignInStub: Stub signin success");
         DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: true, userInfo: user });
     }
 

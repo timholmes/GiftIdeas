@@ -31,7 +31,7 @@ export default function App() {
   // re-initialize firebase auth state
   useEffect(() => {
     setupEnvironment();
-    DeviceEventEmitter.addListener(SignOutEvents.SIGN_OUT_COMPLETE, (eventData) => { handleSignOut(eventData) })
+    // DeviceEventEmitter.addListener(SignOutEvents.SIGN_OUT_COMPLETE, (eventData) => { handleSignOut(eventData) })
     DeviceEventEmitter.addListener(SignInEvents.SIGN_IN_COMPLETE, (eventData) => { handleSignIn(eventData) })
     DeviceEventEmitter.addListener(SignOutEvents.SIGN_OUT_COMPLETE, (eventData) => { handleSignOut(eventData) })  // not getting called in some stub scenarios
 
@@ -43,13 +43,13 @@ export default function App() {
 
   async function setupEnvironment() {
     if (FirebaseUtils.isLocal()) {
-      console.log("Environment is 'local'.");
+      console.log("App: Environment is 'local'.");
       // await FirebaseUtils.stubSignIn(Test2);
     }
   }
 
   async function handleSignIn(eventData: any) {
-    console.log(`Signin is complete.  Success? ${eventData.success}`);
+    console.log(`App: Signin is complete.  Success? ${eventData.success}`);
 
     if (eventData.success == false) {
       setState({ ...initialContext, isLoading: false, isSignedIn: false })
