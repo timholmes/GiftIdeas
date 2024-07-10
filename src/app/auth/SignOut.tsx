@@ -1,6 +1,7 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useEffect } from "react";
 import { Button, DeviceEventEmitter, View } from "react-native";
+import { FirebaseUtils } from "../util/FirebaseUtils";
 
 
 export enum SignOutEvents {
@@ -18,16 +19,22 @@ export default function SignOut({ signOutListener }: any) {
     function signOut() {
         console.log('signout method');
 
-        GoogleSignin.signOut()
-        .then(() => {
+        if(FirebaseUtils.isLocal()) {
+            FirebaseUtils.signOut();
             DeviceEventEmitter.emit(SignOutEvents.SIGN_OUT_COMPLETE, { success: true } );
-            // signOutListener(true, null);
-        })
-        .catch((e) => {
-            DeviceEventEmitter.emit(SignOutEvents.SIGN_OUT_COMPLETE, { success: false, error: e } );
-            // signOutListener(false, e)
-            console.error('Sign out failed.', e);
-        });
+            console.log('local: sign out complete');
+        } else {
+            GoogleSignin.signOut()
+            .then(() => {
+                DeviceEventEmitter.emit(SignOutEvents.SIGN_OUT_COMPLETE, { success: true } );
+                // signOutListener(true, null);
+            })
+            .catch((e) => {
+                DeviceEventEmitter.emit(SignOutEvents.SIGN_OUT_COMPLETE, { success: false, error: e } );
+                // signOutListener(false, e)
+                console.error('Sign out failed.', e);
+            });
+        }
     }
 
     return (

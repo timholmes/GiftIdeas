@@ -1,6 +1,6 @@
 import { GoogleAuthProvider, UserCredential, getAuth, signInWithCredential } from '@firebase/auth';
 import { FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app';
-import { connectAuthEmulator } from 'firebase/auth';
+import { connectAuthEmulator, signOut } from 'firebase/auth';
 import { Firestore, connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { DeviceEventEmitter } from 'react-native';
 import firebaseConfig from '../../../firebase-config.json';
@@ -87,4 +87,7 @@ export class FirebaseUtils {
     return signInWithCredential(getAuth(), provider)
   }
 
+  static async signOut() {
+    await signOut(getAuth());
+  }
 }
