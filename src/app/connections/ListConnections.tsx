@@ -90,9 +90,17 @@ export default function ListConnections({ route, navigation }: any) {
         );
     }
 
+    const titleMessage = () => {
+        if(state.canView.length > 0) {
+            return <Text style={ crudListStyles.titleText }>Below is the list of users that have access to your ideas.</Text>
+        } else {
+            return <Text style={ crudListStyles.titleText }>No connections yet.  Add some below!</Text>
+        }
+    }
+
     return (
         <SafeAreaView style={crudListStyles.container}>
-            <Text style={ crudListStyles.titleText }>Below is the list of users that have access to your ideas.</Text>
+            {titleMessage()}
             <View style={crudListStyles.list}>
                 <ScrollView>
                 {connectionsList()}

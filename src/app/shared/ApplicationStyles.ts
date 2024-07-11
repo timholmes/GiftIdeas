@@ -6,7 +6,7 @@ export const siteStyles = StyleSheet.create({
         margin: 10
     },
     titleText: {
-        marginVertical: 20
+        marginVertical: 40
     },
     primaryButton: {
         width: 100,
