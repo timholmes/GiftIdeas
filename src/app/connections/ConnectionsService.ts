@@ -6,31 +6,32 @@ export enum FirestoreErrorCodes {
 }
 
 export async function findAllConnections(email: string): Promise<string[]> {
-        const db: Firestore = FirebaseUtils.getFirestoreDatabase();
-console.log(email);
-        // TODO: simplify firestore query to path based
-        let docRef = undefined;
-        try {
-            docRef = doc(db, "users", email)
-        } catch (error) {
-            console.log('Unable to get users document reference.', error);
-        }
+    const db: Firestore = FirebaseUtils.getFirestoreDatabase();
+    console.log(email);
 
-        let userDocument: any;
-        if (docRef == undefined) {
-            throw new Error(`Cannot get firestore document for email ${email}`)
-        }
+    // TODO: simplify firestore query to path based
+    let docRef = undefined;
+    try {
+        docRef = doc(db, "users", email)
+    } catch (error) {
+        console.log('Unable to get users document reference.', error);
+    }
 
-        userDocument = await getDoc(docRef) // do this to determine permission?
-        return userDocument.data().canView
+    let userDocument: any;
+    if (docRef == undefined) {
+        throw new Error(`Cannot get firestore document for email ${email}`)
+    }
+
+    userDocument = await getDoc(docRef) // do this to determine permission?
+    return userDocument.data().canView
 }
 
 export async function addConnectionEmail(email: string, connectionEmail: string): Promise<DocumentReference<DocumentData, DocumentData>> {
     const db: Firestore = FirebaseUtils.getFirestoreDatabase();
 
-    const docRef = doc(db, "users", email, "sharing", "view");
+    const docRef = doc(db, "users", email);
     await updateDoc(docRef, {
-        users: arrayUnion(connectionEmail)
+        canView: arrayUnion(connectionEmail)
     });
 
     return docRef;
@@ -38,8 +39,8 @@ export async function addConnectionEmail(email: string, connectionEmail: string)
 
 export async function deleteConnectionByEmail(userEmail: string, connectionEmail: string) {
     const db: Firestore = FirebaseUtils.getFirestoreDatabase();
-    const docRef = doc(db, "users", userEmail, "sharing", "view")
+    const docRef = doc(db, "users", userEmail)
     await updateDoc(docRef, {
-        users: arrayRemove(connectionEmail)
+        canView: arrayRemove(connectionEmail)
     });
 }

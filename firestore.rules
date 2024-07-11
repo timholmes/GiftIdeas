@@ -23,7 +23,7 @@ service cloud.firestore {
     }
 
     match /users/{email}/{document=**} {
-      allow read: if loggedInAndMine(email);
+      allow read, write: if loggedInAndMine(email);
     }
   }
 

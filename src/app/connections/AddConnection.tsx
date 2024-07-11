@@ -29,13 +29,14 @@ export function AddConnection({route, navigation }: any) {
                         }
 
                         try {
-                            addConnectionEmail(appContext.userInfo?.email, values.email)
+                            addConnectionEmail(appContext.userInfo?.email, values.email.toLowerCase())
                             
                         } catch (error) {
+                            // TODO - better error handling
                             console.error(error);
                         }
 
-                        appContext.sharing.view.users.push(values.email);
+                        appContext.canView.push(values.email.toLowerCase());
 
                         navigation.navigate('Connect', { refreshContent: true });
                 }}
