@@ -19,6 +19,7 @@ import GiveList from './src/app/give/GiveList';
 import { AddIdea } from './src/app/ideas/AddIdea';
 import MyIdeas from './src/app/ideas/MyIdeas';
 import { FirebaseUtils } from './src/app/util/FirebaseUtils';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 GoogleSignin.configure();  // required - initializes the native config
 
@@ -34,16 +35,37 @@ export default function App() {
     DeviceEventEmitter.addListener(SignInEvents.SIGN_IN_COMPLETE, (eventData) => { handleSignIn(eventData) })
     DeviceEventEmitter.addListener(SignOutEvents.SIGN_OUT_COMPLETE, (eventData) => { handleSignOut(eventData) })  // not getting called in some stub scenarios
 
+
+    try {
+
+    const functions = FirebaseUtils.getFirestoreFunctions();
+    const helloWorld = httpsCallable(functions, 'helloWorld');
+    
+    helloWorld({})
+      .then((result) => {
+        console.log('ok');
+        console.log(result);
+      })
+      .catch((r) => {
+        console.log('here');
+        console.log(r);
+      })
+
+    } catch(e) {
+      console.log('not here');
+      console.error(e);
+    }
+
     return () => {
       DeviceEventEmitter.removeAllListeners();
     };
+
 
   }, []);
 
   async function setupEnvironment() {
     if (FirebaseUtils.isLocal()) {
       console.log("App: Environment is 'local'.");
-      // await FirebaseUtils.stubSignIn(Test2);
     }
   }
 

@@ -3,7 +3,7 @@
 ## TODO
 
 - [x] crud ideas
-- [ ] connect with another user
-    - [ ] add connection
-    - [ ] share with others
-- [ ] view others ideas
+- [x] connect with another user
+    - [x] add connection
+    - [x] share with others
+- [  ] view others ideas

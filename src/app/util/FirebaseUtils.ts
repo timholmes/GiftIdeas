@@ -6,6 +6,7 @@ import { DeviceEventEmitter } from 'react-native';
 import firebaseConfig from '../../../firebase-config.json';
 import { SignInEvents } from '../auth/SignIn';
 import { User } from '../Types';
+import { connectFunctionsEmulator, Functions, getFunctions } from 'firebase/functions';
 
 // TODO: we are mixing class and function constructs.  Need to refactor.
 export class FirebaseUtils {
@@ -30,6 +31,17 @@ export class FirebaseUtils {
     
     this.databaseInitialized = true;
     return db;
+  }
+
+  static getFirestoreFunctions(): Functions {
+    const firebaseApp = FirebaseUtils.initialize();
+    const functions = getFunctions(firebaseApp);
+
+    if(FirebaseUtils.isLocal()) {
+      connectFunctionsEmulator(functions, 'localhost', 5001);
+    }
+
+    return functions;
   }
   
   private static async setupAuthEmulator() {
