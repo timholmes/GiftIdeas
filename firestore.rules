@@ -13,13 +13,17 @@ service cloud.firestore {
       return request.auth.token != null && request.auth.token.email == email
     }
 
-    function canViewPermissionGranted(email) {
+    function canViewIdeasGranted(email) {
       return request.auth.token.email in get(/databases/$(database)/documents/users/$(email)).data.canView
     }
 
     match /users/{email}/ideas/{document=**} {
       allow read: if loggedInAndMine(email);
-      allow read: if canViewPermissionGranted(email)
+      allow read: if canViewIdeasGranted(email)
+    }
+
+    match /users/{email}/{document=**} {
+      allow read: if loggedInAndMine(email);
     }
   }
 

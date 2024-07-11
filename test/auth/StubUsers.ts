@@ -1,15 +1,22 @@
 import { User } from "../../src/app/Types";
 
-export const Test1: User = {
-    firstName: 'Test1',
-    email: 'test1@test.com',
-    sub: 'test1',
+export const Me: User = {
+    firstName: 'Me',
+    email: 'me@me.com',
+    sub: 'me',
     email_verified: true
 }
 
-export const Test2: User = {
-    firstName: 'Test2',
-    email: 'test2@test.com',
-    sub: 'test2',
+export const NotSharing: User = {
+    firstName: 'NotSharing',
+    email: 'not_sharing@test.com',
+    sub: 'notsharing',
+    email_verified: true
+}
+
+export const Sharing: User = {
+    firstName: 'Sharing',
+    email: 'sharing@test.com',
+    sub: 'sharing',
     email_verified: true
 }

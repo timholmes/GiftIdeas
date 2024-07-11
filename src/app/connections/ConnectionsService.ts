@@ -7,7 +7,7 @@ export enum FirestoreErrorCodes {
 
 export async function findAllConnections(email: string): Promise<string[]> {
         const db: Firestore = FirebaseUtils.getFirestoreDatabase();
-
+console.log(email);
         // TODO: simplify firestore query to path based
         let docRef = undefined;
         try {

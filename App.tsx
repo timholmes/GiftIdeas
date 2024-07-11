@@ -7,19 +7,18 @@ import { useEffect, useState } from 'react';
 import { DeviceEventEmitter, LogBox } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaperProvider } from 'react-native-paper';
-import { Test2 } from './test/auth/StubUsers';
 import { AppContext } from './src/app/AppContext';
 import Home from './src/app/Home';
 import { initialContext } from './src/app/Types';
 import SignIn, { SignInEvents } from './src/app/auth/SignIn';
+import SignInStub from './src/app/auth/SignInStub';
 import SignOut, { SignOutEvents } from './src/app/auth/SignOut';
 import { AddConnection } from './src/app/connections/AddConnection';
 import ListConnections from './src/app/connections/ListConnections';
+import GiveList from './src/app/give/GiveList';
 import { AddIdea } from './src/app/ideas/AddIdea';
 import MyIdeas from './src/app/ideas/MyIdeas';
 import { FirebaseUtils } from './src/app/util/FirebaseUtils';
-import SignInStub from './src/app/auth/SignInStub';
-import GiveList from './src/app/give/GiveList';
 
 GoogleSignin.configure();  // required - initializes the native config
 
