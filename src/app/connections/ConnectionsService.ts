@@ -11,7 +11,7 @@ console.log(email);
         // TODO: simplify firestore query to path based
         let docRef = undefined;
         try {
-            docRef = doc(db, "users", email, "sharing", "view")
+            docRef = doc(db, "users", email)
         } catch (error) {
             console.log('Unable to get users document reference.', error);
         }
@@ -22,7 +22,7 @@ console.log(email);
         }
 
         userDocument = await getDoc(docRef) // do this to determine permission?
-        return userDocument.data()?.users
+        return userDocument.data().canView
 }
 
 export async function addConnectionEmail(email: string, connectionEmail: string): Promise<DocumentReference<DocumentData, DocumentData>> {

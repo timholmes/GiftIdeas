@@ -5,7 +5,7 @@ import { DeviceEventEmitter, SafeAreaView, ScrollView, View } from "react-native
 import { Swipeable } from "react-native-gesture-handler";
 import { AnimatedFAB, Text } from "react-native-paper";
 import { AppContext } from "../AppContext";
-import { Sharing, initialContext } from "../Types";
+import { initialContext } from "../Types";
 import { crudListStyles } from "../shared/ApplicationStyles";
 import { SwipeableItem, SwipeableItemEvents } from "../shared/SwipeableItem";
 import { deleteConnectionByEmail, findAllConnections } from "./ConnectionsService";
@@ -57,14 +57,10 @@ export default function ListConnections({ route, navigation }: any) {
 
             try {
                 let viewUsers: string[] = await findAllConnections(appContext.userInfo.email)
+                console.log(viewUsers);
 
-                let sharing: Sharing = {
-                    view: {
-                        users: viewUsers
-                    }
-                }
-                setState({ ...state, sharing: sharing})
-                appContext.sharing = sharing;
+                setState({ ...state, canView: viewUsers })
+                appContext.canView = viewUsers;
                 
             } catch (error) {
                 console.error("Cannot get list of connections", error);
@@ -88,7 +84,7 @@ export default function ListConnections({ route, navigation }: any) {
     }
 
     const connectionsList = () => {
-        return state.sharing.view.users.map((email, index) =>
+        return state.canView.map((email, index) =>
             // <SwipeableItem id={item} key={index}></SwipeableItem>
             <SwipeableItem key={index} id={email} title={email} description="" data="item" icon="account"></SwipeableItem>
         );
@@ -96,8 +92,8 @@ export default function ListConnections({ route, navigation }: any) {
 
     return (
         <SafeAreaView style={crudListStyles.container}>
+            <Text style={ crudListStyles.titleText }>Below is the list of users that have access to your ideas.</Text>
             <View style={crudListStyles.list}>
-                <Text>Below is the list of users that have access to your ideas.</Text>
                 <ScrollView>
                 {connectionsList()}
                 </ScrollView>

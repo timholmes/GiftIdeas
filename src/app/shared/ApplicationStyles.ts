@@ -5,6 +5,9 @@ export const siteStyles = StyleSheet.create({
         flex: 1,
         margin: 10
     },
+    titleText: {
+        marginVertical: 20
+    },
     primaryButton: {
         width: 100,
         alignContent: 'center'

@@ -5,7 +5,7 @@ type ApplicationState = {
     userInfo?: User,
     userMessage?: string,
     ideas: Idea[],
-    sharing: Sharing
+    canView: string[]
 }
 
 // set initial values for the context
@@ -13,11 +13,7 @@ export const initialContext: ApplicationState = {
     isLoading: true,
     isSignedIn: false,
     ideas: [],
-    sharing: {
-        view: {
-            users: []
-        }
-    }
+    canView: []
 }
 
 export declare interface User {
@@ -31,10 +27,4 @@ export declare interface Idea {
     id?: string,
     title: string,
     description: string
-}
-
-export declare interface Sharing {
-    view: {
-        users: string[]
-    }
 }
