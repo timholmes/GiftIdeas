@@ -17,6 +17,6 @@ export const helloWorld = onRequest((request, response) => {
   logger.info("Hello logs!", {structuredData: true});
   response.send({
     "status" : 200,
-    "data" : "some... data"
+    "data" : "some... data3"
     });
 });

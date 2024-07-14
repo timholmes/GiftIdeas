@@ -1,3 +1,35 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "taskExplorer.exclude": [
+        "**/.vscode-test/**",
+        "**/Assets/**",
+        "**/bin/**",
+        "**/build/**",
+        "**/dist/**",
+        "**/doc/**",
+        "**/example/**",
+        "**/examples/**",
+        "**/ext/**",
+        "**/obj/**",
+        "**/out/**",
+        "**/output/**",
+        "**/packages/**",
+        "**/release/**",
+        "**/releases/**",
+        "**/samples/**",
+        "**/sdks/**",
+        "**/static/**",
+        "**/target/**",
+        "**/test/**",
+        "**/third_party/**",
+        "**/vendor/**",
+        "**/work/**",
+        "/Users/tim/devl/GiftIdeas/functions/node_modules/sprintf-js/gruntfile.js",
+        "/Users/tim/devl/GiftIdeas/functions/node_modules/@bcoe/v8-coverage/gulpfile.ts",
+        "/Users/tim/devl/GiftIdeas/functions/node_modules/protobufjs-cli/node_modules/estraverse/gulpfile.js",
+        "/Users/tim/devl/GiftIdeas/functions/node_modules/send/node_modules/debug/Makefile",
+        "/Users/tim/devl/GiftIdeas/ios/Pods/boost/boost/function/gen_function_N.pl",
+        "/Users/tim/devl/GiftIdeas/ios/Pods/boost/boost/function/detail/gen_maybe_include.pl",
+        "/Users/tim/devl/GiftIdeas/ios/Pods/boost/boost/outcome/outcome.gdb.py"
+    ]
 }
