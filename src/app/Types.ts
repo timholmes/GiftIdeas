@@ -16,6 +16,11 @@ export const initialContext: ApplicationState = {
     canView: []
 }
 
+export type EventData = {
+    success: boolean,
+    error?: string,
+    userInfo?: User
+}
 export declare interface User {
     firstName: string,
     email: string

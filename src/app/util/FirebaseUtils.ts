@@ -38,6 +38,7 @@ export class FirebaseUtils {
     const functions = getFunctions(firebaseApp);
 
     if(FirebaseUtils.isLocal()) {
+      console.log('local port 5001');
       connectFunctionsEmulator(functions, 'localhost', 5001);
     }
 
@@ -67,7 +68,7 @@ export class FirebaseUtils {
   }
 
   static async stubSignIn(user: User) {
-    console.log('stubbing sign in');
+    console.log('stubbing sign in for user ' + user.firstName);
 
     let userCredential: UserCredential;
     try {
@@ -89,8 +90,8 @@ export class FirebaseUtils {
   }
 
   static async setupUser(idToken: string | null | undefined): Promise<UserCredential> {
-
     if(FirebaseUtils.isLocal()) {
+      console.log('Using Auth Emulator for sign-in');
       await FirebaseUtils.setupAuthEmulator();
     }
 

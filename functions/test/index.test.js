@@ -55,6 +55,7 @@ const test = require('firebase-functions-test')({
               }
           }
         myFunctions.helloWorld({}, res);
+        test.firestore.makeDocumentSnapshot({a: 'b'}, '/users/user-sharing@me.com/ideas/')
         // assert.equal(true, true);
       })
     //   assert(true).equals(true);

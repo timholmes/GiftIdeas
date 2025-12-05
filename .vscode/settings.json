@@ -31,5 +31,7 @@
         "/Users/tim/devl/GiftIdeas/ios/Pods/boost/boost/function/gen_function_N.pl",
         "/Users/tim/devl/GiftIdeas/ios/Pods/boost/boost/function/detail/gen_maybe_include.pl",
         "/Users/tim/devl/GiftIdeas/ios/Pods/boost/boost/outcome/outcome.gdb.py"
-    ]
+    ],
+    "taskExplorer.showLastTasks": false,
+    "java.compile.nullAnalysis.mode": "automatic"
 }

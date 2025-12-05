@@ -1,11 +1,11 @@
 import { Formik } from 'formik';
 import { useContext } from 'react';
-import { GestureResponderEvent, View } from "react-native";
+import { GestureResponderEvent, SafeAreaView, View } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import * as Yup from 'yup';
 import { AppContext } from '../AppContext';
-import { crudAddStyles } from '../shared/ApplicationStyles';
-import { addConnectionEmail } from './ConnectionsService';
+import { crudAddStyles, crudListStyles } from '../shared/ApplicationStyles';
+import { addConnection } from './ConnectionsService';
 
 export function AddConnection({route, navigation }: any) {
 
@@ -17,6 +17,8 @@ export function AddConnection({route, navigation }: any) {
     });
 
     return (
+        <SafeAreaView style={crudListStyles.container}>
+            <Text>Enter the person's email to connect with them.  Once you are connected you will see each other's ideas.</Text>
         <View>
             <Formik
                 initialValues={{ email: "" }}
@@ -29,7 +31,7 @@ export function AddConnection({route, navigation }: any) {
                         }
 
                         try {
-                            addConnectionEmail(appContext.userInfo?.email, values.email.toLowerCase())
+                            addConnection(appContext.userInfo?.email, values.email.toLowerCase())
                             
                         } catch (error) {
                             // TODO - better error handling
@@ -68,6 +70,7 @@ export function AddConnection({route, navigation }: any) {
                 </Snackbar>
             </Portal> */}
         </View>
+        </SafeAreaView>
     )
 
 }

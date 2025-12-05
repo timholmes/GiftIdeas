@@ -22,7 +22,16 @@ import { FirebaseUtils } from './src/app/util/FirebaseUtils';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 
 GoogleSignin.configure();  // required - initializes the native config
+/* 
+  Main application entry point
 
+  Handles the following tasks:
+    - initializes firebase environment
+    - listens for sign-in and sign-out events
+    - manages global application state via AppContext
+    - sets up navigation structure
+
+*/
 export default function App() {
   const [state, setState] = useState(initialContext)
 
@@ -34,31 +43,16 @@ export default function App() {
     // DeviceEventEmitter.addListener(SignOutEvents.SIGN_OUT_COMPLETE, (eventData) => { handleSignOut(eventData) })
     DeviceEventEmitter.addListener(SignInEvents.SIGN_IN_COMPLETE, (eventData) => { handleSignIn(eventData) })
     DeviceEventEmitter.addListener(SignOutEvents.SIGN_OUT_COMPLETE, (eventData) => { handleSignOut(eventData) })  // not getting called in some stub scenarios
-
-
-    try {
-
-    const functions = FirebaseUtils.getFirestoreFunctions();
-    const helloWorld = httpsCallable(functions, 'helloWorld');
     
-    helloWorld({})
-      .then((result) => {
-        console.log('ok');
-        console.log(result);
-      })
-      .catch((r) => {
-        console.log('here');
-        console.log(r);
-      })
+    let functions = FirebaseUtils.getFirestoreFunctions();
 
-    } catch(e) {
-      console.log('not here');
-      console.error(e);
-    }
+    // const addMessage = httpsCallable(functions, 'helloWorld');
+        
 
     return () => {
       DeviceEventEmitter.removeAllListeners();
     };
+
 
 
   }, []);
@@ -103,7 +97,7 @@ export default function App() {
     return (
       <SignInStack.Navigator>
         <SignInStack.Screen name="SignIn" component={SignIn} />
-        <SignInStack.Screen name="SignInStub" component={ SignInStub } options={{ title: "Sign In Stub" }} />
+        <SignInStack.Screen name="SignInStub" component={SignInStub} options={{ title: "Sign In Stub" }} />
       </SignInStack.Navigator>
     )
   }
@@ -111,7 +105,7 @@ export default function App() {
   function HomeStackScreen() {
     return (
       <HomeStack.Navigator>
-        <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false, headerTitle: "" }}/>
+        <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false, headerTitle: "" }} />
       </HomeStack.Navigator>
     )
   }
@@ -221,8 +215,8 @@ export default function App() {
       <AppContext.Provider value={state}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <NavigationContainer>
-            { FirebaseUtils.isLocal() && !state.isSignedIn && <SignInStackScreen /> }
-            { state.isSignedIn && <MainTabs /> }
+            {FirebaseUtils.isLocal() && !state.isSignedIn && <SignInStackScreen />}
+            {state.isSignedIn && <MainTabs />}
           </NavigationContainer>
         </GestureHandlerRootView>
       </AppContext.Provider>

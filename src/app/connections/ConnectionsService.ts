@@ -1,13 +1,15 @@
 import { DocumentData, DocumentReference, Firestore, arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { FirebaseUtils } from "../util/FirebaseUtils";
+import { httpsCallable } from "firebase/functions";
 
 export enum FirestoreErrorCodes {
     PERMISSION_DENIED = 'permission-denied'
 }
 
 export async function findAllConnections(email: string): Promise<string[]> {
+    console.log("ConnectionsService: findAllConnections for ", email);
+
     const db: Firestore = FirebaseUtils.getFirestoreDatabase();
-    console.log(email);
 
     // TODO: simplify firestore query to path based
     let docRef = undefined;
@@ -26,15 +28,25 @@ export async function findAllConnections(email: string): Promise<string[]> {
     return userDocument.data().canView
 }
 
-export async function addConnectionEmail(email: string, connectionEmail: string): Promise<DocumentReference<DocumentData, DocumentData>> {
-    const db: Firestore = FirebaseUtils.getFirestoreDatabase();
+export async function addConnection(email: string, connectionEmail: string): Promise<void> {
+    try {
+        const functions = FirebaseUtils.getFirestoreFunctions();
+        const addConnection = httpsCallable(functions, 'addConnection');
 
-    const docRef = doc(db, "users", email);
-    await updateDoc(docRef, {
-        canView: arrayUnion(connectionEmail)
-    });
+        addConnection({})
+            .then((result) => {
+                console.log('function addConnection callback');
+                console.log(result);
+            })
+            .catch((r) => {
+                console.log('here');
+                console.error('Error calling addConnection function:', r);
+            })
 
-    return docRef;
+    } catch (e) {
+        console.log('not here');
+        console.error(e);
+    }
 }
 
 export async function deleteConnectionByEmail(userEmail: string, connectionEmail: string) {

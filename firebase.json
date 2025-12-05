@@ -14,8 +14,7 @@
         "firebase-debug.*.log"
       ],
       "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint",
-        "npm --prefix \"$RESOURCE_DIR\" run build"
+        "npm --prefix functions run build"
       ]
     }
   ],
@@ -26,7 +25,7 @@
     },
     "firestore": {
       "host": "0.0.0.0",
-      "port": 8080
+      "port": 8085
     },
     "functions": {
       "host": "0.0.0.0",
