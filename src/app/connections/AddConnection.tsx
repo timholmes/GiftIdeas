@@ -27,7 +27,7 @@ export function AddConnection({route, navigation }: any) {
                 onSubmit={async values => {
                         
                         if(!appContext.userInfo?.email) {
-                            throw new Error("Invalid login.  Cannot add new connection.")
+                            throw new Error("Add new connection: user email not defined");
                         }
 
                         try {

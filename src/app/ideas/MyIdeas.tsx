@@ -28,36 +28,39 @@ export default function MyIdeas({ route, navigation }: any) {
     }
 
     useEffect(() => {
-        DeviceEventEmitter.addListener(SwipeableItemEvents.DELETE_PRESS, (swipeable: Swipeable) => { handleDeletePress(swipeable) })
-        DeviceEventEmitter.addListener(SwipeableItemEvents.ITEM_PRESS, (idea: Idea) => { handleItemPress(idea) })
-    
-        return () => {
-          DeviceEventEmitter.removeAllListeners();
-        };
+        onLoad().then(() => {
+            console.log('ideas loaded');
+            DeviceEventEmitter.addListener(SwipeableItemEvents.DELETE_PRESS, (swipeable: Swipeable) => { handleDeletePress(swipeable) })
+            DeviceEventEmitter.addListener(SwipeableItemEvents.ITEM_PRESS, (idea: Idea) => { handleItemPress(idea) })
+        
+            return () => {
+            DeviceEventEmitter.removeAllListeners();
+            };
+        });
     
       }, []);
 
     // called when params are changed.  1st - when params are undefined on load, 2nd - when navigating back from another screen
-    useFocusEffect(
-        useCallback(
-            () => {
-                if (route.params && route.params.refreshContent) {
-                    onLoad(true);
-                } else {
-                    onLoad();
-                }
+    // useFocusEffect(
+    //     useCallback(
+    //         () => {
+    //             if (route.params && route.params.refreshContent) {
+    //                 onLoad(true);
+    //             } else {
+    //                 onLoad();
+    //             }
 
-            }, [route.params])
-    );
+    //         }, [route.params])
+    // );
 
     async function onLoad(useContext: boolean = false) {
         console.log(`my ideas: load useContext? ${useContext}`);
 
-        if (useContext) {
+        // if (useContext) {
 
-            setState({ ...appContext });
+        //     setState({ ...appContext });
 
-        } else {    // reload data from firebase
+        // } else {    // reload data from firebase
 
             // TODO: show a a critical error and force login
             if (!appContext.userInfo) {
@@ -76,7 +79,7 @@ export default function MyIdeas({ route, navigation }: any) {
             setState({ ...state, ideas: allIdeas });
     
             appContext.ideas = allIdeas;
-        }
+        // }
     }
     
     async function handleDeletePress(swipeable: Swipeable) {

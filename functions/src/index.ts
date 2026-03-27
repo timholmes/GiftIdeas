@@ -25,9 +25,13 @@ exports.helloWorld = onCall((request, response) => {
   return { message: "Hello from Firebase!" };
 });
 
+
 exports.addConnection = onCall((request) => {
     // const email = request.data.email;
     // logger.info("isSignedUpUser called for email: ", email);
+
+    logger.info("********************** ");
+  console.log("****** token uid", request.auth?.uid);
 
     // const db = FirebaseUtils.getFirestoreDatabase();
     // const userDocRef = doc(db, "users", email);

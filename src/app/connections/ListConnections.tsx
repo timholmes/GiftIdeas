@@ -8,7 +8,7 @@ import { AppContext } from "../AppContext";
 import { initialContext } from "../Types";
 import { crudListStyles } from "../shared/ApplicationStyles";
 import { SwipeableItem, SwipeableItemEvents } from "../shared/SwipeableItem";
-import { deleteConnectionByEmail, findAllConnections } from "./ConnectionsService";
+import { addConnection, deleteConnectionByEmail, findAllConnections } from "./ConnectionsService";
 
 export default function ListConnections({ route, navigation }: any) {
     const appContext = useContext(AppContext);
@@ -17,56 +17,61 @@ export default function ListConnections({ route, navigation }: any) {
     let db: Firestore;
 
     useEffect(() => {
-        DeviceEventEmitter.addListener(SwipeableItemEvents.DELETE_PRESS, (swipeable: Swipeable) => { handleDeletePress(swipeable) });
-        DeviceEventEmitter.addListener(SwipeableItemEvents.ITEM_PRESS, (swipeable: Swipeable) => { return; });  // catch it but do nothing 
-    
-        return () => {
-          DeviceEventEmitter.removeAllListeners();
-        };
+
+        onLoad().then(() => {
+            DeviceEventEmitter.addListener(SwipeableItemEvents.DELETE_PRESS, (swipeable: Swipeable) => { handleDeletePress(swipeable) });
+            DeviceEventEmitter.addListener(SwipeableItemEvents.ITEM_PRESS, (swipeable: Swipeable) => { return; });  // catch it but do nothing 
+
+            return () => {
+            DeviceEventEmitter.removeAllListeners();
+            };
+        });
+
+       
     
       }, []);
 
     // called when params are changed.  1st - when params are undefined on load, 2nd - when navigating back from another screen
-    useFocusEffect(
-        useCallback(
-            () => {
-                if (route.params && route.params.refreshContent) {
-                    onLoad(true);
-                } else {
-                    onLoad();
-                }
+    // useFocusEffect(
+    //     useCallback(
+    //         () => {
+    //             if (route.params && route.params.refreshContent) {
+    //                 onLoad(true);
+    //             } else {
+    //                 onLoad();
+    //             }
 
-            }, [route.params]
-        )
-    );
+    //         }, [route.params]
+    //     )
+    // );
 
     async function onLoad(useContext: boolean = false) {
-        console.log(`list connections: load useContext? ${useContext}`);
 
-        if (useContext) {
+        // console.log(`list connections: load useContext? ${useContext}`);
 
-            setState( { ...appContext });
-
-        } else {    // reload data from firebase
+        // if (useContext) {
+        //     setState( { ...appContext });
+        // } else {    // reload data from firebase
             
             // TODO: show a a critical error and force login
-            if (!appContext.userInfo) {
-                console.error("Unexpected userInfo is empty.");
-                return;
-            }
+            // if (!appContext.userInfo) {
+            //     console.error("Unexpected userInfo is empty.");
+            //     return;
+            // }
 
-            try {
-                let viewUsers: string[] = await findAllConnections(appContext.userInfo.email)
-                console.log(viewUsers);
-
-                setState({ ...state, canView: viewUsers })
-                appContext.canView = viewUsers;
+            // try {
+            //     let viewUsers: string[] = await findAllConnections(appContext.userInfo.email)
                 
-            } catch (error) {
-                console.error("Cannot get list of connections", error);
-            }
+            //     console.log('connections found for user', appContext.userInfo.email, viewUsers);
 
-        }
+            //     setState({ ...state, canView: viewUsers })
+            //     appContext.canView = viewUsers;
+                
+            // } catch (error) {
+            //     console.error("Cannot get list of connections", error);
+            // }
+
+        // }
     }
     
     async function handleDeletePress(swipeable: Swipeable) {

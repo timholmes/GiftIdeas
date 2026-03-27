@@ -11,21 +11,22 @@ export async function findAllConnections(email: string): Promise<string[]> {
 
     const db: Firestore = FirebaseUtils.getFirestoreDatabase();
 
-    // TODO: simplify firestore query to path based
-    let docRef = undefined;
-    try {
-        docRef = doc(db, "users", email)
-    } catch (error) {
-        console.log('Unable to get users document reference.', error);
-    }
+    // // TODO: simplify firestore query to path based
+    // let docRef = undefined;
+    // try {
+    //     docRef = doc(db, "users", email)
+    // } catch (error) {
+    //     console.error('Unable to get users document reference.', error);
+    // }
 
-    let userDocument: any;
-    if (docRef == undefined) {
-        throw new Error(`Cannot get firestore document for email ${email}`)
-    }
+    // let userDocument: any;
+    // if (docRef == undefined) {
+    //     throw new Error(`Cannot get firestore document for email ${email}`)
+    // }
 
-    userDocument = await getDoc(docRef) // do this to determine permission?
-    return userDocument.data().canView
+    // userDocument = await getDoc(docRef) // do this to determine permission?
+    // return userDocument.data().canView
+    return [];
 }
 
 export async function addConnection(email: string, connectionEmail: string): Promise<void> {

@@ -23,10 +23,12 @@ export class FirebaseUtils {
 
   static getFirestoreDatabase(): Firestore {
     const firebaseApp = FirebaseUtils.initialize();
+
     const db = getFirestore(firebaseApp);
     
     if (!this.databaseInitialized && FirebaseUtils.isLocal()) {
-      connectFirestoreEmulator(db, 'localhost', 8080);
+      console.log("connecting to firestore emulator");
+      connectFirestoreEmulator(db, '127.0.0.1', 8085);  // port set in firebase.json
     }
     
     this.databaseInitialized = true;
@@ -38,7 +40,6 @@ export class FirebaseUtils {
     const functions = getFunctions(firebaseApp);
 
     if(FirebaseUtils.isLocal()) {
-      console.log('local port 5001');
       connectFunctionsEmulator(functions, 'localhost', 5001);
     }
 

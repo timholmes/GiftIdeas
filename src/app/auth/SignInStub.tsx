@@ -6,6 +6,7 @@ import { siteStyles } from "../shared/ApplicationStyles";
 import { FirebaseUtils } from "../util/FirebaseUtils";
 import { SignInEvents } from "./SignIn";
 import { httpsCallable } from "firebase/functions";
+import { addConnection } from "../connections/ConnectionsService";
 
 
 export default function SignInStub() {
@@ -34,21 +35,26 @@ export default function SignInStub() {
         DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: true, userInfo: user });
     }
 
-    function handleClickFunction() {
+    async function handleClickFunction() {
 
         try {
-              const functions = FirebaseUtils.getFirestoreFunctions();
-              const helloWorld = httpsCallable(functions, 'helloWorld');
+
+            await addConnection("email1", "email2");
+
+            console.log("done adding ");
+
+            //   const functions = FirebaseUtils.getFirestoreFunctions();
+            //   const helloWorld = httpsCallable(functions, 'helloWorld');
         
-              helloWorld({})
-                .then((result) => {
-                  console.log('function callback');
-                  console.log(result);
-                })
-                .catch((r) => {
-                  console.log('here');
-                  console.error('Error calling helloWorld function:', r);
-                })
+            //   helloWorld({})
+            //     .then((result) => {
+            //       console.log('function callback');
+            //       console.log(result);
+            //     })
+            //     .catch((r) => {
+            //       console.log('here');
+            //       console.error('Error calling helloWorld function:', r);
+            //     })
         
             } catch (e) {
               console.log('not here');
