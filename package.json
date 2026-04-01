@@ -7,10 +7,11 @@
 	"main": "node_modules/expo/AppEntry.js",
 	"scripts": {
 		"start": "expo start",
-		"android:dev": "expo run:android",
-		"ios:dev": "expo run:ios",
-		"web:dev": "expo start --web",
-		"functions:start": "cd functions && npm run serve",
+		"backend:start": "firebase emulators:start --import ./test/emulator-data",
+		"android:start": "expo run:android",
+		"ios:start": "expo run:ios",
+		"web:start": "expo start --web",
+		"emulators:run": "npm run functions:start",
 		"test-firestore": "jest --forceExit test/firestore.rules.spec.ts",
 		"test": "jest --forceExit --watch"
 	},
