@@ -1,5 +1,5 @@
 import { DocumentData, DocumentReference, Firestore, QuerySnapshot, addDoc, collection, deleteDoc, doc, getDoc, getDocs } from "firebase/firestore";
-import { Idea } from "../types/DataStoreTypes";
+import { Idea } from "../../../types/DataStoreTypes";
 import { FirebaseUtils } from "../util/FirebaseUtils";
 
 

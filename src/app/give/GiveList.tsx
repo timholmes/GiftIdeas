@@ -4,7 +4,7 @@ import { SafeAreaView, ScrollView, View } from "react-native";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { AnimatedFAB } from "react-native-paper";
 import { AppContext } from "../AppContext";
-import { Idea } from "../types/DataStoreTypes";
+import { Idea } from "../../../types/DataStoreTypes";
 import { crudListStyles } from "../shared/ApplicationStyles";
 import { SwipeableItem } from "../shared/SwipeableItem";
 import { FirebaseUtils } from "../util/FirebaseUtils";

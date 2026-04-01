@@ -1,4 +1,4 @@
-import { User } from "../../src/app/types/DataStoreTypes";
+import { User } from "../../types/DataStoreTypes";
 
 export const Me: User = {
     firstName: 'Me',

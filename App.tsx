@@ -19,7 +19,7 @@ import { AddIdea } from './src/app/ideas/AddIdea';
 import MyIdeas from './src/app/ideas/MyIdeas';
 import { FirebaseUtils } from './src/app/util/FirebaseUtils';
 import { getFunctions, httpsCallable } from 'firebase/functions';
-import { initialContext } from './src/app/types/SystemTypes';
+import { initialContext } from './types/SystemTypes';
 
 GoogleSignin.configure();  // required - initializes the native config
 /* 
