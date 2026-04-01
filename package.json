@@ -7,7 +7,8 @@
 	"main": "node_modules/expo/AppEntry.js",
 	"scripts": {
 		"start": "expo start",
-		"backend:start": "firebase emulators:start --import ./test/emulator-data",
+		"backend:start": "firebase emulators:start --import ./util/emulator-data --export-on-exit ./util/emulator-data",
+		"backend:reset": "npx tsx util/seedFirestore.ts",
 		"android:start": "expo run:android",
 		"ios:start": "expo run:ios",
 		"web:start": "expo start --web",
