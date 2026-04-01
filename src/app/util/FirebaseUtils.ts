@@ -2,9 +2,7 @@ import { GoogleAuthProvider, UserCredential, getAuth, signInWithCredential } fro
 import { FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app';
 import { connectAuthEmulator, signOut } from 'firebase/auth';
 import { Firestore, connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
-import { DeviceEventEmitter } from 'react-native';
 import firebaseConfig from '../../../firebase-config.json';
-import { SignInEvents } from '../auth/SignIn';
 import { User } from '../../../types/DataStoreTypes';
 import { connectFunctionsEmulator, Functions, getFunctions } from 'firebase/functions';
 
@@ -53,7 +51,11 @@ export class FirebaseUtils {
     // on hot reload - don't initialize if already initialized
     if (!auth.emulatorConfig) {
       const authUrl = 'http://localhost:9099'
-      await fetch(authUrl)
+      try {
+        await fetch(authUrl)
+      } catch (e) {
+        throw new Error(`Auth emulator is unreachable at ${authUrl}. Is it running?`);
+      }
 
       try {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true })
@@ -61,33 +63,15 @@ export class FirebaseUtils {
         console.error(e);
       }
     }
-    // why? to make sure that emulator are loaded
   }
 
   static isLocal(): boolean {
     return (process.env.EXPO_PUBLIC_ENVIRONMENT == 'LOCAL') ? true : false
   }
 
-  static async stubSignIn(user: User) {
+  static async stubSignIn(user: User): Promise<void> {
     console.log('stubbing sign in for user ' + user.firstName);
-
-    let userCredential: UserCredential;
-    try {
-      userCredential = await FirebaseUtils.setupUser(JSON.stringify(user)); // emulator takes a plain json string
-    } catch (e: any) {
-      // TODO: graceful user message
-      if (e.code == 'auth/invalid-credential') {
-        // setState({ ...initialState, userMessage: 'Session expired, you will need to login again.' });
-        console.log('ID token is expired.  Sending to sign in page.');
-        DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: false });
-      } else if (e.code == 'auth/network-request-failed') {
-        DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: false });
-      }
-      console.error('Firebase login failed..', e);
-      return;
-    }
-    
-    DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: true, userInfo: user });
+    await FirebaseUtils.setupUser(JSON.stringify(user)); // emulator takes a plain json string; throws on failure
   }
 
   static async setupUser(idToken: string | null | undefined): Promise<UserCredential> {

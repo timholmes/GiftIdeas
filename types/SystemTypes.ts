@@ -19,6 +19,6 @@ export const initialContext: ApplicationState = {
 
 export type EventData = {
     success: boolean;
-    error?: string;
+    error?: string | Error;
     userInfo?: User;
 };
