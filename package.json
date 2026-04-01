@@ -11,7 +11,6 @@
 		"android:start": "expo run:android",
 		"ios:start": "expo run:ios",
 		"web:start": "expo start --web",
-		"emulators:run": "npm run functions:start",
 		"test-firestore": "jest --forceExit test/firestore.rules.spec.ts",
 		"test": "jest --forceExit --watch"
 	},
