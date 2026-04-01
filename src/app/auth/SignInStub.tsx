@@ -1,7 +1,7 @@
 import { DeviceEventEmitter, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { Me, NotSharing, Sharing } from "../../../test/auth/StubUsers";
-import { User, EventData } from "../Types";
+import { User, EventData } from "../types/Types";
 import { siteStyles } from "../shared/ApplicationStyles";
 import { FirebaseUtils } from "../util/FirebaseUtils";
 import { SignInEvents } from "./SignIn";

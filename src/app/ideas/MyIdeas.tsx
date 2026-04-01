@@ -6,7 +6,7 @@ import { DeviceEventEmitter, SafeAreaView, ScrollView, StyleSheet, View } from "
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { AnimatedFAB } from "react-native-paper";
 import { AppContext } from "../AppContext";
-import { Idea } from "../Types";
+import { Idea } from "../types/Types";
 import { FirebaseUtils } from "../util/FirebaseUtils";
 import { SwipeableItem, SwipeableItemEvents } from "../shared/SwipeableItem";
 import { deleteIdea, findAllIdeas } from "./IdeasService";

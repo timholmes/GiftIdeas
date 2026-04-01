@@ -9,7 +9,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaperProvider } from 'react-native-paper';
 import { AppContext } from './src/app/AppContext';
 import Home from './src/app/Home';
-import { initialContext } from './src/app/Types';
+import { initialContext } from './src/app/types/Types';
 import SignIn, { SignInEvents } from './src/app/auth/SignIn';
 import SignInStub from './src/app/auth/SignInStub';
 import SignOut, { SignOutEvents } from './src/app/auth/SignOut';

@@ -1,4 +1,4 @@
-import { User } from "../../src/app/Types";
+import { User } from "../../src/app/types/Types";
 
 export const Me: User = {
     firstName: 'Me',
