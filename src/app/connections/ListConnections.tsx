@@ -5,7 +5,7 @@ import { DeviceEventEmitter, SafeAreaView, ScrollView, View } from "react-native
 import { Swipeable } from "react-native-gesture-handler";
 import { AnimatedFAB, Text } from "react-native-paper";
 import { AppContext } from "../AppContext";
-import { initialContext } from "../types/Types";
+import { initialContext } from "../types/SystemTypes";
 import { crudListStyles } from "../shared/ApplicationStyles";
 import { SwipeableItem, SwipeableItemEvents } from "../shared/SwipeableItem";
 import { addConnection, deleteConnectionByEmail, findAllConnections } from "./ConnectionsService";

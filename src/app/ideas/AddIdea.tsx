@@ -4,7 +4,7 @@ import { GestureResponderEvent, View } from "react-native";
 import { Button, Portal, Snackbar, Text, TextInput } from "react-native-paper";
 import * as Yup from 'yup';
 import { AppContext } from '../AppContext';
-import { Idea } from '../types/Types';
+import { Idea } from '../types/DataStoreTypes';
 import { crudAddStyles } from '../shared/ApplicationStyles';
 import { createIdea } from './IdeasService';
 

@@ -3,7 +3,7 @@ import { Button, DeviceEventEmitter } from "react-native";
 import { FirebaseUtils } from "../util/FirebaseUtils";
 import LoadingOverlay from "../util/LoadingOverlay";
 import { useEffect, useState } from "react";
-import { User } from "../types/Types";
+import { User } from "../types/DataStoreTypes";
 import SignInStub from "./SignInStub";
 
 export enum SignInEvents {
