@@ -43,4 +43,4 @@ ui-debug.log
 firestore-debug.log
 firebase-debug.log
 
-.npm_cache/
+.npm-cache/
