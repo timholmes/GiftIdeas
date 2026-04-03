@@ -1,22 +1,11 @@
+import { dataSeed } from "../../util/dataSeed";
 import { User } from "../../types/DataStoreTypes";
 
-export const Me: User = {
-    firstName: 'Me',
-    email: 'me@me.com',
-    sub: 'me',
-    email_verified: true
-}
+// Use users from dataSeed for consistency
+export const Tim: User = dataSeed.users[0]; // tim@example.com
+export const Alex: User = dataSeed.users[1]; // alex@example.com
 
-export const NotSharing: User = {
-    firstName: 'NotSharing',
-    email: 'not_sharing@test.com',
-    sub: 'notsharing',
-    email_verified: true
-}
-
-export const Sharing: User = {
-    firstName: 'Sharing',
-    email: 'sharing@test.com',
-    sub: 'sharing',
-    email_verified: true
-}
+// Legacy names for backwards compatibility
+export const Me = Tim;
+export const Sharing = Tim;
+export const NotSharing = Alex;

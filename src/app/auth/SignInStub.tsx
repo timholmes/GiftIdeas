@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DeviceEventEmitter, View } from "react-native";
 import { Button, Text } from "react-native-paper";
-import { Me, NotSharing, Sharing } from "../../../test/auth/StubUsers";
+import { Tim, Alex } from "../../../test/auth/StubUsers";
 import { User } from "../../../types/DataStoreTypes";
 import { siteStyles } from "../shared/ApplicationStyles";
 import { FirebaseUtils } from "../util/FirebaseUtils";
@@ -30,13 +30,10 @@ export default function SignInStub() {
         <View style={siteStyles.container}>
             <Text style={{ paddingTop: 10, paddingBottom: 20 }}>Select a user below to test with that user.</Text>
             <View style={{ paddingBottom: 10 }}>
-                <Button onPress={() => handleClickUser(Me)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Me</Button>
+                <Button onPress={() => handleClickUser(Tim)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Tim</Button>
             </View>
             <View style={{ paddingBottom: 10 }}>
-                <Button onPress={() => handleClickUser(Sharing)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Sharing</Button>
-            </View>
-            <View style={{ paddingBottom: 10 }}>
-                <Button onPress={() => handleClickUser(NotSharing)} mode="contained" style={{ width: 150 }} disabled={loading}>Not Sharing</Button>
+                <Button onPress={() => handleClickUser(Alex)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Alex</Button>
             </View>
         </View>
     )
