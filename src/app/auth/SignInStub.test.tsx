@@ -1,7 +1,8 @@
 import React from 'react';
 import { DeviceEventEmitter } from 'react-native';
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 import SignInStub from './SignInStub';
+import { renderWithAppContext } from '../test-utils/renderWithAppContext';
 
 jest.mock('../util/FirebaseUtils', () => ({
   FirebaseUtils: {
@@ -13,7 +14,7 @@ describe('SignInStub', () => {
   it('renders seeded users and emits sign-in success for Tim', async () => {
     const emitSpy = jest.spyOn(DeviceEventEmitter, 'emit');
 
-    const { getByText } = render(<SignInStub />);
+    const { getByText } = renderWithAppContext(<SignInStub />);
 
     expect(getByText('Tim')).toBeTruthy();
     expect(getByText('Alex')).toBeTruthy();

@@ -12,10 +12,12 @@
 		"android:start": "expo run:android",
 		"ios:start": "expo run:ios",
 		"web:start": "expo start --web",
-		"test-firestore": "jest --forceExit test/firestore.rules.spec.ts",
+		"test-firestore": "jest --forceExit test/firebase.rules.authenticated.self.spec.ts test/firebase.rules.unauthenticated.spec.ts",
+		"test:rules": "jest --forceExit test/firebase.rules.authenticated.self.spec.ts test/firebase.rules.unauthenticated.spec.ts",
 		"test": "jest --forceExit --watch",
 		"test:tsx": "jest --config jest.tsx.config.js",
-		"test:tsx:watch": "jest --config jest.tsx.config.js --watch"
+		"test:tsx:watch": "jest --config jest.tsx.config.js --watch",
+		"test:ci": "npm run test:rules && npm run test:tsx -- --runInBand"
 	},
 	"dependencies": {
 		"@react-native-async-storage/async-storage": "1.18.2",
