@@ -42,3 +42,5 @@ android/app/android-giftideas-upload.keystore
 ui-debug.log
 firestore-debug.log
 firebase-debug.log
+
+.npm_cache/
