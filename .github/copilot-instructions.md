@@ -38,9 +38,7 @@
   - `npm run functions:start` -> `cd functions && npm run serve`
 
 ## Project Conventions
-- App code in `src/app/**`, including features: `ideas`, `connections`, `give`, `permissions`, `shared`.
-- Firestore rules tests exist in `test/firebase.rules.authenticated.self.spec.ts`, `test/firebase.rules.unauthenticated.spec.ts`.
-- Startup process (per README): emulators via `scripts/start-emulators.sh`, build watch for functions `cd functions && npm run build:watch`.
+- Presentation code for the mobile device is in `src/app/**`
 
 ## Integration Points
 - Client uses `firebase-config.json` + platform config files (`google-services.json`, `GoogleService-Info.plist`).
