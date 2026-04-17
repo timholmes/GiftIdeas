@@ -29,24 +29,20 @@ export async function findAllConnections(email: string): Promise<string[]> {
     return [];
 }
 
-export async function addConnection(email: string, connectionEmail: string): Promise<void> {
+export async function addConnection(currentUserEmail: string, targetUserEmail: string): Promise<void> {
     try {
         const functions = FirebaseUtils.getFirestoreFunctions();
-        const addConnection = httpsCallable(functions, 'addConnection');
+        const addConnectionFn = httpsCallable(functions, 'addConnection');
 
-        addConnection({})
-            .then((result) => {
-                console.log('function addConnection callback');
-                console.log(result);
-            })
-            .catch((r) => {
-                console.log('here');
-                console.error('Error calling addConnection function:', r);
-            })
+        const result = await addConnectionFn({
+            currentUserEmail,
+            targetUserEmail,
+        });
 
-    } catch (e) {
-        console.log('not here');
-        console.error(e);
+        console.log('addConnection result:', result.data);
+    } catch (error) {
+        console.error('Error calling addConnection function:', error);
+        throw error;
     }
 }
 

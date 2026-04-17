@@ -14,6 +14,12 @@
 - Styling: use `StyleSheet.create` and React Native components (per existing app style).
 - Cloud Functions: TypeScript source in `functions/src/index.ts`, compiled to `functions/lib/index.js`.
 - Lint: `functions` uses `eslint --ext .js,.ts .` and `eslint-config-google`.
+- Documentation: All new methods/functions must have JSDoc comments explaining purpose, parameters, returns, and exceptions. Follow self-explanatory code principles: comment WHY, not WHAT.
+
+## Testing Standards
+- All new code must have unit tests.
+- Code coverage must be >= 80%.
+- Use Jest for testing, following established patterns in the codebase.
 
 ## Firebase & Firestore Patterns
 - Data models: define TS types for Firestore collections, e.g., `User`, `Idea`, `Connection` in `src/app/...`.

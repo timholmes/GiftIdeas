@@ -10,7 +10,7 @@
 		"backend:start": "./scripts/start-emulators.sh",
 		"backend:reset": "npx tsx util/seedFirestore.ts",
 		"android:start": "expo run:android",
-		"ios:start": "expo run:ios --configuration Release",
+		"ios:start": "expo run:ios",
 		"ios:start:release": "expo run:ios --configuration Release",
 		"web:start": "expo start --web",
 		"test-firestore": "jest --forceExit test/firebase.rules.authenticated.self.spec.ts test/firebase.rules.unauthenticated.spec.ts",
