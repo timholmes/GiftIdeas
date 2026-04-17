@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Kill any existing Firebase emulators
+echo "Killing any existing Firebase emulators..."
+pkill -f "firebase emulators" || true
+sleep 2
+
 # Start Firebase emulators in the background
 firebase emulators:start &
 
