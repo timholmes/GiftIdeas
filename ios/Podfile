@@ -75,6 +75,16 @@ target 'GiftIdeas' do
         end
       end
     end
+
+    # Xcode 26's newer Clang promotes RN 0.72's Yoga literal-operator syntax
+    # (missing space before _pt/_percent) from warning to hard error. Silence
+    # it here rather than patching the vendored yoga source in node_modules.
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['WARNING_CFLAGS'] ||= ['$(inherited)']
+        config.build_settings['WARNING_CFLAGS'] << '-Wno-deprecated-literal-operator'
+      end
+    end
   end
 
   post_integrate do |installer|
