@@ -22,7 +22,7 @@
 - Real-time: use `onSnapshot` with cleanup in `useEffect` return.
 - Trust Firestore security rules for validation; UI should do minimal validation.
 
-## Build and Test
+## Building and Running
 - Root app:
   - `npm install`
   - `npm run start`
@@ -47,3 +47,7 @@
 ## Security
 - Enforce `auth != null` in Firestore rules; check tests in `test/**`.
 - No hardcoded credentials; use environment and Firebase standard config.
+
+## End-to-end tests
+- only test on the default simulator which is iPhone 17 (iOS 26.5)
+- For end-to-end iOS testing, use the `run-maestro-tests` skill.
