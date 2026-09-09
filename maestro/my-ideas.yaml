@@ -2,9 +2,9 @@ appId: com.timdholmes.GiftIdeas
 ---
 - launchApp:
     clearState: true
-# - tapOn: "http://localhost:8081"
-# - swipe:
-#     direction: DOWN
+- tapOn: "http://localhost:8081"
+- swipe:
+    direction: DOWN
 - tapOn: "Tim"
 - tapOn: "My Ideas, tab, 2 of 4"
 - assertVisible: "\udb80\udf35 Weekend Cabin Gift Book a two-night cabin stay with hiking nearby."

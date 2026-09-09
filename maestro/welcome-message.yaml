@@ -2,8 +2,8 @@ appId: com.timdholmes.GiftIdeas
 ---
 - launchApp:
     clearState: false
-# - tapOn: "http://localhost:8081"
-# - swipe:
-#     direction: DOWN
+- tapOn: "http://localhost:8081"
+- swipe:
+    direction: DOWN
 - tapOn: "Tim"
 - assertVisible: "Welcome, Tim.\n"
