@@ -49,6 +49,6 @@
 - Enforce `auth != null` in Firestore rules; check tests in `test/**`.
 - No hardcoded credentials; use environment and Firebase standard config.
 
-## End-to-end tests
+<!-- ## End-to-end tests
 - only test on the default simulator which is iPhone 17 (iOS 26.5)
-- For end-to-end iOS testing, use the `run-maestro-tests` skill.
+- For end-to-end iOS testing, use the `run-maestro-tests` skill. -->
