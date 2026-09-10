@@ -2,15 +2,21 @@ import type { Idea, User } from "../types/DataStoreTypes";
 
 export const userSeed: User[] = [
   {
-    firstName: "Tim",
-    email: "tim@example.com",
-    sub: "auth0|tim-001",
+    firstName: "Me",
+    email: "me@example.com",
+    sub: "auth0|me-001",
     email_verified: true,
   },
   {
-    firstName: "Alex",
-    email: "alex@example.com",
-    sub: "auth0|alex-002",
+    firstName: "Friend1",
+    email: "friend1@example.com",
+    sub: "auth0|friend1-002",
+    email_verified: false,
+  },
+  {
+    firstName: "Friend2",
+    email: "friend2@example.com",
+    sub: "auth0|friend2-003",
     email_verified: false,
   },
 ];

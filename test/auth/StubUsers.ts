@@ -2,10 +2,11 @@ import { dataSeed } from "../../util/dataSeed";
 import { User } from "../../types/DataStoreTypes";
 
 // Use users from dataSeed for consistency
-export const Tim: User = dataSeed.users[0]; // tim@example.com
-export const Alex: User = dataSeed.users[1]; // alex@example.com
+export const Me: User = dataSeed.users[0]; // me@example.com
+export const Friend1: User = dataSeed.users[1]; // friend1@example.com
+export const Friend2: User = dataSeed.users[2]; // friend2@example.com
 
 // Legacy names for backwards compatibility
-export const Me = Tim;
-export const Sharing = Tim;
-export const NotSharing = Alex;
+// export const Me = Me;
+// export const Sharing = Tim;
+// export const NotSharing = Alex;
