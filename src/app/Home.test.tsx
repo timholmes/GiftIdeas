@@ -71,16 +71,16 @@ describe('Home', () => {
     expect(getByText('Add')).toBeTruthy();
   });
 
-  it('shows the invite prompt with exactly 1 active connection (US2, FR-001)', () => {
+  it('hides the invite prompt with exactly 1 active connection (US1, FR-002)', () => {
     mockConnections({ isLoading: false, activeConnections: ['b@example.com'] });
 
-    const { getByText } = renderWithAppContext(
+    const { queryByText } = renderWithAppContext(
       <Home route={route} navigation={navigation} />,
       { userInfo }
     );
 
-    expect(getByText(INVITE_MESSAGE)).toBeTruthy();
-    expect(getByText('Add')).toBeTruthy();
+    expect(queryByText(INVITE_MESSAGE)).toBeNull();
+    expect(queryByText('Add')).toBeNull();
   });
 
   it('hides the invite prompt with 2 active connections (US1, FR-002)', () => {
@@ -127,8 +127,8 @@ describe('Home', () => {
     expect(getByText(/Welcome, Tim\./)).toBeTruthy();
   });
 
-  it('hides the prompt live when active connections cross from 1 to 2 without remounting (US3, FR-004)', () => {
-    mockConnections({ isLoading: false, activeConnections: ['b@example.com'] });
+  it('hides the prompt live when active connections cross from 0 to 1 without remounting (US3, FR-004)', () => {
+    mockConnections({ isLoading: false, activeConnections: [] });
 
     // Rendered via a fixed AppContext.Provider wrapper (rather than
     // renderWithAppContext) so `rerender` updates the same root element type
@@ -144,20 +144,14 @@ describe('Home', () => {
 
     expect(getByText(INVITE_MESSAGE)).toBeTruthy();
 
-    mockConnections({
-      isLoading: false,
-      activeConnections: ['b@example.com', 'c@example.com'],
-    });
+    mockConnections({ isLoading: false, activeConnections: ['b@example.com'] });
     rerender(wrap());
 
     expect(queryByText(INVITE_MESSAGE)).toBeNull();
   });
 
-  it('shows the prompt again live when active connections drop from 2 to 1 without remounting (US3, FR-004)', () => {
-    mockConnections({
-      isLoading: false,
-      activeConnections: ['b@example.com', 'c@example.com'],
-    });
+  it('shows the prompt again live when active connections drop from 1 to 0 without remounting (US3, FR-004)', () => {
+    mockConnections({ isLoading: false, activeConnections: ['b@example.com'] });
 
     const wrap = () => (
       <AppContext.Provider value={{ ...initialContext, userInfo }}>
@@ -169,7 +163,7 @@ describe('Home', () => {
 
     expect(queryByText(INVITE_MESSAGE)).toBeNull();
 
-    mockConnections({ isLoading: false, activeConnections: ['b@example.com'] });
+    mockConnections({ isLoading: false, activeConnections: [] });
     rerender(wrap());
 
     expect(getByText(INVITE_MESSAGE)).toBeTruthy();

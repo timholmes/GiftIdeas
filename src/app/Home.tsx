@@ -11,7 +11,7 @@ export default function Home({ route, navigation}: any) {
 
   const appContext = useContext(AppContext);
   const { activeConnections, isLoading } = useConnections(appContext.userInfo?.email);
-  const shouldShowInvitePrompt = isLoading || activeConnections.length <= 1;
+  const shouldShowInvitePrompt = isLoading || activeConnections.length === 0;
 
   return (
     <SafeAreaView style={homeStyles.container}>
