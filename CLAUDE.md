@@ -25,17 +25,18 @@
 ## Building and Running
 - Root app:
   - `npm install`
-  - `npm run start`
-  - `npm run ios:dev`, `npm run android:dev`, `npm run web:dev`
-  - `npm run test`
+  - `npm run start` (Expo dev server)
+  - `npm run ios:start`, `npm run android:start`, `npm run web:start`
+  - `npm run test` (jest, watch mode), `npm run test:ci` (rules + tsx tests, non-watch)
+- Backend emulators (Auth + Firestore + Functions, run from repo root):
+  - `npm run backend:start` -> `./scripts/start-emulators.sh` (starts `firebase emulators:start`, waits for Firestore, then seeds it via `backend:reset`)
+  - `npm run backend:reset` -> `npx tsx util/seedFirestore.ts` (re-seed emulator data without restarting emulators)
+  - Note: there is no `functions:start` script — use `backend:start` even when only Functions are needed, since the app also expects Auth/Firestore emulators and seeded data.
 - Functions package:
   - `cd functions && npm install`
   - `cd functions && npm run build`
-  - `cd functions && npm run serve` (build + `firebase emulators:start --only functions`)
-  - `cd functions && npm run shell`
   - `cd functions && npm run deploy`
-- Root shortcuts:
-  - `npm run functions:start` -> `cd functions && npm run serve`
+  - `cd functions && npm run lint`, `cd functions && npm run test`
 
 ## Project Conventions
 - Presentation code for the mobile device is in `src/app/**`

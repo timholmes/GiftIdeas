@@ -5,7 +5,32 @@ import { Button, Snackbar, Text, TextInput } from "react-native-paper";
 import * as Yup from 'yup';
 import { AppContext } from '../AppContext';
 import { crudAddStyles, crudListStyles } from '../shared/ApplicationStyles';
-import { addConnection } from './ConnectionsService';
+import { sendConnectionRequest } from './ConnectionsService';
+
+function getFunctionsErrorCode(error: unknown): string | undefined {
+    if (error && typeof error === 'object' && 'code' in error) {
+        return (error as { code: unknown }).code as string;
+    }
+    return undefined;
+}
+
+// Maps sendConnectionRequest failures to their required user-facing message.
+// The "functions/not-found" message is intentionally generic — it must not
+// confirm or deny that an account exists for the entered email (FR-004).
+function getSendConnectionRequestErrorMessage(error: unknown): string {
+    switch (getFunctionsErrorCode(error)) {
+        case 'functions/failed-precondition':
+            return "You can't add yourself as a connection.";
+        case 'functions/already-exists':
+            return "You're already connected, or a request is already pending, with that email.";
+        case 'functions/not-found':
+            return "Couldn't send request. Please double-check the email and try again.";
+        case 'functions/invalid-argument':
+            return "Please enter a valid email address.";
+        default:
+            return "Something went wrong sending your request. Please try again.";
+    }
+}
 
 export function AddConnection({route, navigation }: any) {
 
@@ -36,11 +61,10 @@ export function AddConnection({route, navigation }: any) {
                         setIsSubmitting(true);
 
                         try {
-                            await addConnection(appContext.userInfo.email, values.email.toLowerCase());
-                            navigation.navigate('Connect', { refreshContent: true });
+                            await sendConnectionRequest(values.email.toLowerCase());
+                            navigation.navigate('Connect');
                         } catch (error) {
-                            const errorMessage = error instanceof Error ? error.message : 'Failed to add connection.';
-                            setSnackbarMessage(errorMessage);
+                            setSnackbarMessage(getSendConnectionRequestErrorMessage(error));
                             setSnackbarVisible(true);
                         } finally {
                             setIsSubmitting(false);

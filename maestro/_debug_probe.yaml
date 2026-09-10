@@ -1,0 +1,20 @@
+appId: com.timdholmes.GiftIdeas
+---
+- launchApp:
+    clearState: true
+- tapOn: "http://localhost:8081"
+- swipe:
+    direction: DOWN
+- tapOn: "Tim"
+- tapOn: "Connect, tab, 4 of 4"
+- tapOn:
+    id: "animated-fab"
+- tapOn: "Email"
+- inputText: "alex@example.com"
+- tapOn: "Submit"
+- extendedWaitUntil:
+    visible: "Pending (sent by you)"
+    timeout: 15000
+- assertVisible: "alex"
+- assertVisible: "Waiting"
+- assertVisible: "Cancel"

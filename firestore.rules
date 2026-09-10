@@ -22,7 +22,21 @@ service cloud.firestore {
       allow read: if canViewIdeasGranted(email)
     }
 
-    match /users/{email}/{document=**} {
+    match /users/{email}/connectionRequests/{document=**} {
+      allow read: if loggedInAndMine(email);
+      // No client write rule: all connectionRequests writes go through
+      // Cloud Functions using the Admin SDK, which is not subject to
+      // these rules. This keeps request creation/acceptance/decline/
+      // cancellation fully server-validated.
+      //
+      // NOTE: this only blocks client writes because the catch-all rule
+      // below was narrowed from a recursive `{document=**}` to the exact
+      // `users/{email}` document. Firestore rules OR together every
+      // matching block for a path, so a still-recursive catch-all would
+      // have silently re-granted client write access here.
+    }
+
+    match /users/{email} {
       allow read, write: if loggedInAndMine(email);
     }
   }

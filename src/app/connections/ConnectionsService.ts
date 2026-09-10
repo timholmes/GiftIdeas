@@ -1,4 +1,4 @@
-import { DocumentData, DocumentReference, Firestore, arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { Firestore, arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { FirebaseUtils } from "../util/FirebaseUtils";
 import { httpsCallable } from "firebase/functions";
 
@@ -6,44 +6,33 @@ export enum FirestoreErrorCodes {
     PERMISSION_DENIED = 'permission-denied'
 }
 
-export async function findAllConnections(email: string): Promise<string[]> {
-    console.log("ConnectionsService: findAllConnections for ", email);
+export async function sendConnectionRequest(targetEmail: string): Promise<{ status: 'pending' | 'connected' }> {
+    const functions = FirebaseUtils.getFirestoreFunctions();
+    const sendConnectionRequestFn = httpsCallable<{ targetEmail: string }, { status: 'pending' | 'connected' }>(functions, 'sendConnectionRequest');
 
-    const db: Firestore = FirebaseUtils.getFirestoreDatabase();
-
-    // // TODO: simplify firestore query to path based
-    // let docRef = undefined;
-    // try {
-    //     docRef = doc(db, "users", email)
-    // } catch (error) {
-    //     console.error('Unable to get users document reference.', error);
-    // }
-
-    // let userDocument: any;
-    // if (docRef == undefined) {
-    //     throw new Error(`Cannot get firestore document for email ${email}`)
-    // }
-
-    // userDocument = await getDoc(docRef) // do this to determine permission?
-    // return userDocument.data().canView
-    return [];
+    const result = await sendConnectionRequestFn({ targetEmail });
+    return result.data;
 }
 
-export async function addConnection(currentUserEmail: string, targetUserEmail: string): Promise<void> {
-    try {
-        const functions = FirebaseUtils.getFirestoreFunctions();
-        const addConnectionFn = httpsCallable(functions, 'addConnection');
+export async function cancelConnectionRequest(toEmail: string): Promise<void> {
+    const functions = FirebaseUtils.getFirestoreFunctions();
+    const cancelConnectionRequestFn = httpsCallable<{ toEmail: string }, { success: boolean }>(functions, 'cancelConnectionRequest');
 
-        const result = await addConnectionFn({
-            currentUserEmail,
-            targetUserEmail,
-        });
+    await cancelConnectionRequestFn({ toEmail });
+}
 
-        console.log('addConnection result:', result.data);
-    } catch (error) {
-        console.error('Error calling addConnection function:', error);
-        throw error;
-    }
+export async function acceptConnectionRequest(fromEmail: string): Promise<void> {
+    const functions = FirebaseUtils.getFirestoreFunctions();
+    const acceptConnectionRequestFn = httpsCallable<{ fromEmail: string }, { success: boolean }>(functions, 'acceptConnectionRequest');
+
+    await acceptConnectionRequestFn({ fromEmail });
+}
+
+export async function declineConnectionRequest(fromEmail: string): Promise<void> {
+    const functions = FirebaseUtils.getFirestoreFunctions();
+    const declineConnectionRequestFn = httpsCallable<{ fromEmail: string }, { success: boolean }>(functions, 'declineConnectionRequest');
+
+    await declineConnectionRequestFn({ fromEmail });
 }
 
 export async function deleteConnectionByEmail(userEmail: string, connectionEmail: string) {
