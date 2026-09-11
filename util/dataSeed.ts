@@ -21,20 +21,48 @@ export const userSeed: User[] = [
   },
 ];
 
-export const ideaSeed: Idea[] = [
-  {
-    id: "idea-001",
-    title: "Weekend Cabin Gift",
-    description: "Book a two-night cabin stay with hiking nearby.",
-  },
-  {
-    id: "idea-002",
-    title: "Coffee Subscription",
-    description: "Three-month small-batch coffee subscription.",
-  },
-];
+// Each user's own set of ideas, keyed by email — distinct per user rather
+// than shared, so connections' Give panels show genuinely different content.
+export const ideaSeedByEmail: Record<string, Idea[]> = {
+  "me@example.com": [
+    {
+      id: "idea-001",
+      title: "Weekend Cabin Gift",
+      description: "Book a two-night cabin stay with hiking nearby.",
+    },
+    {
+      id: "idea-002",
+      title: "Coffee Subscription",
+      description: "Three-month small-batch coffee subscription.",
+    },
+  ],
+  "friend1@example.com": [
+    {
+      id: "idea-001",
+      title: "Board Game Night Set",
+      description: "A couple of new board games for game night with friends.",
+    },
+    {
+      id: "idea-002",
+      title: "Hiking Boots",
+      description: "A sturdy pair of waterproof hiking boots, size 10.",
+    },
+  ],
+  "friend2@example.com": [
+    {
+      id: "idea-001",
+      title: "Pottery Class",
+      description: "A beginner pottery class at the local studio.",
+    },
+    {
+      id: "idea-002",
+      title: "Succulent Plant Set",
+      description: "A small set of easy-care succulents for the windowsill.",
+    },
+  ],
+};
 
 export const dataSeed = {
   users: userSeed,
-  ideas: ideaSeed,
+  ideasByEmail: ideaSeedByEmail,
 };

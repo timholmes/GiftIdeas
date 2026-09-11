@@ -1,7 +1,7 @@
 import { getApps, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import firebaseConfig from "../firebase-config.json";
-import { ideaSeed, userSeed } from "./dataSeed";
+import { ideaSeedByEmail, userSeed } from "./dataSeed";
 import type { Idea, User } from "../types/DataStoreTypes";
 
 const FIRESTORE_EMULATOR_HOST = "127.0.0.1:8085";
@@ -23,22 +23,25 @@ function getIdeaDocId(idea: Idea, index: number): string {
 
 export async function seedFirestoreEmulator(
   users: User[] = userSeed,
-  ideas: Idea[] = ideaSeed
+  ideasByEmail: Record<string, Idea[]> = ideaSeedByEmail
 ): Promise<void> {
   initializeAdmin();
   const db = getFirestore();
   const batch = db.batch();
+  let totalIdeas = 0;
 
   users.forEach((user) => {
     const userRef = db.collection("users").doc(user.email);
     batch.set(userRef, user);
 
+    const ideas = ideasByEmail[user.email] ?? [];
     ideas.forEach((idea, index) => {
       const ideaRef = userRef.collection("ideas").doc(getIdeaDocId(idea, index));
       batch.set(ideaRef, {
         title: idea.title,
         description: idea.description,
       });
+      totalIdeas++;
     });
   });
 
@@ -47,8 +50,8 @@ export async function seedFirestoreEmulator(
     "Seeded " +
       String(users.length) +
       " users and " +
-      String(ideas.length) +
-      " ideas per user into Firestore emulator at " +
+      String(totalIdeas) +
+      " ideas (unique per user) into Firestore emulator at " +
       FIRESTORE_EMULATOR_HOST +
       "."
   );

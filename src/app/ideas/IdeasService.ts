@@ -2,6 +2,25 @@ import { DocumentData, DocumentReference, Firestore, QuerySnapshot, addDoc, coll
 import { Idea } from "../../../types/DataStoreTypes";
 import { FirebaseUtils } from "../util/FirebaseUtils";
 
+export interface ConnectionIdeas {
+    email: string;
+    ideas: Idea[];
+}
+
+export async function findIdeasForConnections(emails: string[]): Promise<ConnectionIdeas[]> {
+    const results = await Promise.allSettled(emails.map((email) => findAllIdeas(email)));
+
+    return results.map((result, index) => {
+        const email = emails[index];
+
+        if (result.status === "fulfilled") {
+            return { email, ideas: result.value };
+        }
+
+        console.error(`Error getting ideas for connection ${email}.`, result.reason);
+        return { email, ideas: [] };
+    });
+}
 
 export async function findAllIdeas(email: string): Promise<Idea[]> {
     console.log('getting ideas from firebase');

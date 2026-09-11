@@ -1,55 +1,64 @@
-import { Firestore } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useContext, useState } from "react";
 import { SafeAreaView, ScrollView, View } from "react-native";
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { AnimatedFAB } from "react-native-paper";
+import { List, Text } from "react-native-paper";
 import { AppContext } from "../AppContext";
-import { Idea } from "../../../types/DataStoreTypes";
 import { crudListStyles } from "../shared/ApplicationStyles";
-import { SwipeableItem } from "../shared/SwipeableItem";
-import { FirebaseUtils } from "../util/FirebaseUtils";
+import { useConnections } from "../connections/useConnections";
+import { ConnectionIdeas, findIdeasForConnections } from "../ideas/IdeasService";
 
-const ideas: Idea[] = [];
-const initialState = {
-    ideas: ideas
-}
-
-export default function MyIdeas({ route, navigation }: any) {
+export default function GiveList({ route, navigation }: any) {
     const appContext = useContext(AppContext);
-    const [state, setState] = useState(initialState)
+    const { activeConnections } = useConnections(appContext.userInfo?.email);
+    const [connectionIdeas, setConnectionIdeas] = useState<ConnectionIdeas[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    let db: Firestore;
+    useFocusEffect(
+        useCallback(() => {
+            let isCurrent = true;
+            setIsLoading(true);
 
+            findIdeasForConnections(activeConnections).then((result) => {
+                if (isCurrent) {
+                    setConnectionIdeas(result);
+                    setIsLoading(false);
+                }
+            });
 
-    useEffect(() => {
+            return () => {
+                isCurrent = false;
+            };
+        }, [activeConnections])
+    );
 
-    }, []);
+    const hasAnyIdeas = connectionIdeas.some((connection) => connection.ideas.length > 0);
 
-    async function onLoad(useContext: boolean = false) {
-
-        // TODO: simplify firestore query to path based
-        // let allIdeas: Idea[] = [];
-        // try {
-        //     allIdeas = await findAllIdeas(appContext.userInfo.email)
-        // } catch (error) {
-        //     console.error("Error getting idea list.", error)
-        // }
-
-        // setState({ ...state, ideas: allIdeas });
-
-    }
-
-    const ideasList = () => {
-        return state.ideas.map((idea, index) =>
-            <SwipeableItem key={index} id={idea.id} title={idea.title} description={idea.description} data={idea} icon="lightbulb"></SwipeableItem>
-        );
-    }
+    const connectionSections = () => {
+        return connectionIdeas
+            .filter((connection) => connection.ideas.length > 0)
+            .map((connection) => (
+                <View key={connection.email}>
+                    <Text style={crudListStyles.titleText}>{connection.email}</Text>
+                    {connection.ideas.map((idea, index) => (
+                        <List.Item
+                            key={idea.id ?? index}
+                            title={idea.title}
+                            description={idea.description}
+                            left={(props) => <List.Icon {...props} icon="lightbulb" />}
+                        />
+                    ))}
+                </View>
+            ));
+    };
 
     return (
         <SafeAreaView style={crudListStyles.container}>
             <View style={crudListStyles.list}>
                 <ScrollView>
-                    {ideasList()}
+                    {!isLoading && !hasAnyIdeas && (
+                        <Text style={crudListStyles.titleText}>No ideas from your connections yet.</Text>
+                    )}
+                    {!isLoading && hasAnyIdeas && connectionSections()}
                 </ScrollView>
             </View>
         </SafeAreaView>
