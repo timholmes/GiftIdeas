@@ -1,7 +1,7 @@
 {
   "projects": {
     "default": "gift-ideas-b1988",
-    "staging": "gift-ideas-b1988"
+    "staging": "gift-ideas-staging"
   },
   "targets": {},
   "etags": {}
