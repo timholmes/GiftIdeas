@@ -17,8 +17,20 @@ jobs:
           node-version: "20"
           cache: "npm"
 
+      # The Firestore/Auth emulator (Java) requires JDK 21+; ubuntu-latest
+      # doesn't ship one new enough by default.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
       - name: Install dependencies
         run: npm ci
+
+      - name: Write firebase-config.json
+        run: echo "$FIREBASE_CONFIG_JSON" > firebase-config.json
+        env:
+          FIREBASE_CONFIG_JSON: ${{ secrets.FIREBASE_CONFIG_JSON }}
 
       - name: Type check
         run: npx tsc --noEmit
@@ -28,9 +40,6 @@ jobs:
 
   functions:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: functions
     steps:
       - uses: actions/checkout@v4
 
@@ -38,16 +47,21 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: functions/package-lock.json
 
       - name: Install dependencies
+        # functions is an npm workspace (see root package.json) — installing
+        # from the repo root is what actually links its bin scripts (mocha,
+        # tsc, eslint) into functions/node_modules/.bin.
         run: npm ci
 
       - name: Lint
+        working-directory: functions
         run: npm run lint
 
       - name: Build
+        working-directory: functions
         run: npm run build
 
       - name: Test
+        working-directory: functions
         run: npm test

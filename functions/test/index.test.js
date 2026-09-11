@@ -3,11 +3,11 @@
 var assert = require('assert')
 
 // At the top of test/index.test.js
-const test = require('firebase-functions-test')({
-    databaseURL: 'https://gift-ideas-b1988-default-rtdb.firebaseio.com',
-    storageBucket: 'gift-ideas-b1988.appspot.com',
-    projectId: 'gift-ideas-b1988',
-  }, '../../gift-ideas-b1988-51ddb3e64ac5-app-engine-default-svc-acct.json');
+// Offline mode: no project credentials needed. The tests here only
+// exercise function logic directly (e.g. helloWorld's request/response
+// handling), not real Firestore/Auth/Database behavior, so there's no
+// need for a live service account key (which must never be committed).
+const test = require('firebase-functions-test')();
 
   describe('Cloud Functions', () => {
     let myFunctions;
