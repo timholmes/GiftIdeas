@@ -17,6 +17,13 @@ jobs:
           node-version: "20"
           cache: "npm"
 
+      # The Firestore/Auth emulator (Java) requires JDK 21+; ubuntu-latest
+      # doesn't ship one new enough by default.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
       - name: Install dependencies
         run: npm ci
 
