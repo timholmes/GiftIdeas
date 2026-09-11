@@ -1,0 +1,33 @@
+name: Deploy (production)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install functions dependencies
+        working-directory: functions
+        run: npm ci
+
+      - name: Authenticate to Firebase
+        run: echo "$FIREBASE_SERVICE_ACCOUNT_PROD" > /tmp/gcp-key.json
+        env:
+          FIREBASE_SERVICE_ACCOUNT_PROD: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROD }}
+
+      - name: Deploy rules, indexes, and functions to production
+        run: npx firebase-tools deploy --project default --only firestore:rules,firestore:indexes,functions --non-interactive
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp-key.json
