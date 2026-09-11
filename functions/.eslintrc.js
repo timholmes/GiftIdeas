@@ -19,6 +19,7 @@ module.exports = {
   },
   ignorePatterns: [
     "/lib/**/*", // Ignore built files.
+    "/test/**/*", // Plain JS Mocha specs, not part of the TS project.
   ],
   plugins: [
     "@typescript-eslint",

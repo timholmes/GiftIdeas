@@ -11,22 +11,23 @@ jest.mock('../util/FirebaseUtils', () => ({
 }));
 
 describe('SignInStub', () => {
-  it('renders seeded users and emits sign-in success for Tim', async () => {
+  it('renders seeded users and emits sign-in success for Me', async () => {
     const emitSpy = jest.spyOn(DeviceEventEmitter, 'emit');
 
     const { getByText } = renderWithAppContext(<SignInStub />);
 
-    expect(getByText('Tim')).toBeTruthy();
-    expect(getByText('Alex')).toBeTruthy();
+    expect(getByText('Me')).toBeTruthy();
+    expect(getByText('Friend1')).toBeTruthy();
+    expect(getByText('Friend2')).toBeTruthy();
 
-    fireEvent.press(getByText('Tim'));
+    fireEvent.press(getByText('Me'));
 
     await waitFor(() => {
       expect(emitSpy).toHaveBeenCalledWith(
         'event.onSignIn',
         expect.objectContaining({
           success: true,
-          userInfo: expect.objectContaining({ email: 'tim@example.com' }),
+          userInfo: expect.objectContaining({ email: 'me@example.com' }),
         })
       );
     });

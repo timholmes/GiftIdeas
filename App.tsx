@@ -168,8 +168,7 @@ export default function App() {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="home" color={color} size={size} />
             )
-          }}>
-        </Tab.Screen>
+          }} />
         <Tab.Screen
           name="My Ideas"
           initialParams={state.userInfo}
@@ -180,8 +179,7 @@ export default function App() {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="lightbulb" color={color} size={size} />
             )
-          }}>
-        </Tab.Screen>
+          }} />
         <Tab.Screen
           name="GiveTab"
           initialParams={state.userInfo}
@@ -192,8 +190,7 @@ export default function App() {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="wallet-giftcard" color={color} size={size} />
             )
-          }}>
-        </Tab.Screen>
+          }} />
         <Tab.Screen
           name="Connections"
           initialParams={state.userInfo}
@@ -204,8 +201,7 @@ export default function App() {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="handshake-outline" color={color} size={size} />
             )
-          }}>
-        </Tab.Screen>
+          }} />
       </Tab.Navigator>
     )
   }
