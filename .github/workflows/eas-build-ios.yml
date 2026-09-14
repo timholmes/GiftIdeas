@@ -12,9 +12,15 @@ on:
           - production
         default: preview
 
+concurrency:
+  group: eas-build-ios-${{ inputs.profile }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.profile == 'production' && 'production' || 'preview' }}
     steps:
       - uses: actions/checkout@v4
 
