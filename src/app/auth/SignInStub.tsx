@@ -30,13 +30,13 @@ export default function SignInStub() {
         <View style={siteStyles.container}>
             <Text style={{ paddingTop: 10, paddingBottom: 20 }}>Select a user below to test with that user.</Text>
             <View style={{ paddingBottom: 10 }}>
-                <Button onPress={() => handleClickUser(Me)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Me</Button>
+                <Button testID="signin-me-button" onPress={() => handleClickUser(Me)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Me</Button>
             </View>
             <View style={{ paddingBottom: 10 }}>
-                <Button onPress={() => handleClickUser(Friend1)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Friend1</Button>
+                <Button testID="signin-friend1-button" onPress={() => handleClickUser(Friend1)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Friend1</Button>
             </View>
             <View style={{ paddingBottom: 10 }}>
-                <Button onPress={() => handleClickUser(Friend2)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Friend2</Button>
+                <Button testID="signin-friend2-button" onPress={() => handleClickUser(Friend2)} mode="contained" style={siteStyles.primaryButton} disabled={loading}>Friend2</Button>
             </View>
         </View>
     )
