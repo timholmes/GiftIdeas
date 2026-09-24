@@ -1,26 +1,28 @@
+# Steps 
+# - Launch the app
+# - Navigate to the "Connect" tab
+# - Add a new connection
+# - Verify the connection request is pending
 appId: com.timdholmes.GiftIdeas
 ---
 - launchApp:
     clearState: true
-- extendedWaitUntil:
-    visible: "Development servers"
-    timeout: 5000
-- tapOn: "http://localhost:8081"
-- swipe:
-    direction: DOWN
-- tapOn: "Tim"
+- runFlow:
+    file: subflows/setup-steps.yaml
+- tapOn: "Me"
 - tapOn: "Connect, tab, 4 of 4"
 - assertVisible: "No connections yet.  Add some below!"
 - tapOn:
     id: "animated-fab"
 - assertVisible: "Add Connection"
 - tapOn: "Email"
-- inputText: "alex@example.com"
+- inputText: "friend1@example.com"
 - tapOn: "Submit"
 - extendedWaitUntil:
     visible: "Pending (sent by you)"
     timeout: 15000
+- assertVisible: "friend1@example.com"
 - assertVisible: 
     id: "invitation-list-item"
-    text: "alex@example.com"
+    text: "friend1@example.com"
 - assertVisible: "Waiting for them to respond"

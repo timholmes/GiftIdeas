@@ -26,6 +26,7 @@ export default function Home({ route, navigation}: any) {
               To invite someone to your ideas, click below.
             </Text>
             <Button
+              id="add-connection-button"
               onPress={() => navigation.navigate('Connections')}
               mode="contained"
               style={homeStyles.button}

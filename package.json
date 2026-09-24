@@ -20,6 +20,8 @@
 		"test:tsx:watch": "jest --config jest.tsx.config.js --watch",
 		"test:ci": "npm run test:rules && npm run test:tsx -- --runInBand",
 		"e2e:build:ios": "detox build -c ios.sim.release",
+		"//e2e:build:ios:fast": "Skips re-bundling JS (safe only if JS hasn't changed since the last build). Don't alternate between this and e2e:build:ios build-to-build: switching costs ~20-50s (new env var invalidates Xcode's Swift compile cache) before settling back into fast repeat builds (~7.5s) for whichever one you stick with.",
+		"e2e:build:ios:fast": "SKIP_BUNDLING=1 detox build -c ios.sim.release",
 		"e2e:test:ios": "detox test -c ios.sim.release",
 		"postinstall": "patch-package"
 	},

@@ -21,11 +21,27 @@ function getIdeaDocId(idea: Idea, index: number): string {
   return idea.id ?? "seed-idea-" + String(index + 1);
 }
 
+async function clearFirestoreEmulator(): Promise<void> {
+  const projectId = firebaseConfig.result.sdkConfig.projectId;
+  const host = process.env.FIRESTORE_EMULATOR_HOST ?? FIRESTORE_EMULATOR_HOST;
+  const url = "http://" + host + "/emulator/v1/projects/" + projectId + "/databases/(default)/documents";
+
+  const response = await fetch(url, { method: "DELETE" });
+  if (!response.ok) {
+    throw new Error(
+      "Failed to clear Firestore emulator (" + String(response.status) + " " + response.statusText + ")"
+    );
+  }
+  console.log("Cleared Firestore emulator data at " + host + ".");
+}
+
 export async function seedFirestoreEmulator(
   users: User[] = userSeed,
   ideasByEmail: Record<string, Idea[]> = ideaSeedByEmail
 ): Promise<void> {
   initializeAdmin();
+  await clearFirestoreEmulator();
+
   const db = getFirestore();
   const batch = db.batch();
   let totalIdeas = 0;

@@ -1,0 +1,10 @@
+appId: com.timdholmes.GiftIdeas
+---
+- launchApp:
+    clearState: false
+- runFlow:
+    file: subflows/setup-steps.yaml
+- tapOn: "Me"
+- assertVisible: "Welcome, Me.\n"
+- assertVisible: "To invite someone to your ideas, click below."
+- assertVisible: "Add"

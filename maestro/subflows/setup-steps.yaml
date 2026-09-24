@@ -1,0 +1,12 @@
+appId: com.timdholmes.GiftIdeas
+---
+- runFlow:
+    when:
+      visible: "Development servers"
+    commands:
+      - tapOn: "http://localhost:8081"
+- runFlow:
+    when:
+      visible: "SDK"
+    commands:
+      - tapOn: "Continue"

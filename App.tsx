@@ -159,7 +159,7 @@ export default function App() {
         }}
       >
         <Tab.Screen
-          name="HomeTab"
+          name="Home"
           component={HomeStackScreen}
           initialParams={state.userInfo}
           options={{
