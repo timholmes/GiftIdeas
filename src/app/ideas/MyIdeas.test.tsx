@@ -21,26 +21,23 @@ jest.mock('../util/FirebaseUtils', () => ({
 }));
 
 jest.mock('../shared/SwipeableItem', () => ({
-  SwipeableItemEvents: {
-    DELETE_PRESS: 'event.delete',
-    ITEM_PRESS: 'event.press',
-  },
-  SwipeableItem: ({ title }: { title: string }) => {
-    const React = require('react');
-    const { Text } = require('react-native');
-    return <Text>{title}</Text>;
-  },
+  SwipeToDelete: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-jest.mock('react-native-paper', () => {
-  const React = require('react');
-  const { Text, TouchableOpacity } = require('react-native');
+jest.mock('../connections/useConnections', () => ({
+  useConnections: jest.fn().mockReturnValue({
+    activeConnections: ['friend1@example.com'],
+    incomingRequests: [],
+    outgoingRequests: [],
+    isLoading: false,
+  }),
+}));
+
+jest.mock('@react-navigation/native', () => {
+  const { useEffect } = require('react');
   return {
-    AnimatedFAB: ({ onPress }: { onPress: () => void }) => (
-      <TouchableOpacity onPress={onPress}>
-        <Text>Open AddIdea</Text>
-      </TouchableOpacity>
-    ),
+    ...jest.requireActual('@react-navigation/native'),
+    useFocusEffect: (callback: () => void | (() => void)) => useEffect(callback, [callback]),
   };
 });
 
@@ -49,11 +46,11 @@ const { findAllIdeas } = jest.requireMock('./IdeasService') as {
 };
 
 describe('MyIdeas', () => {
-  it('loads and displays ideas, then navigates to AddIdea from FAB', async () => {
+  it('loads and displays ideas, then navigates to AddIdea from the add button', async () => {
     const navigation = { navigate: jest.fn() };
     const route = {};
 
-    const { getByText, findByText } = renderWithAppContext(
+    const { getByLabelText, findByText } = renderWithAppContext(
       <MyIdeas route={route} navigation={navigation} />,
       {
         userInfo: {
@@ -70,7 +67,10 @@ describe('MyIdeas', () => {
 
     expect(await findByText('Weekend Cabin Gift')).toBeTruthy();
 
-    fireEvent.press(getByText('Open AddIdea'));
+    expect(await findByText('Book a two-night cabin stay with hiking nearby.')).toBeTruthy();
+    expect(await findByText('Visible to your 1 friend')).toBeTruthy();
+
+    fireEvent.press(getByLabelText('Add an idea'));
     expect(navigation.navigate).toHaveBeenCalledWith('AddIdea');
   });
 });

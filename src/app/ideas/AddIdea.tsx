@@ -1,11 +1,12 @@
 import { Formik } from 'formik';
 import { useContext, useEffect, useState } from 'react';
-import { GestureResponderEvent, View } from "react-native";
-import { Button, Portal, Snackbar, Text, TextInput } from "react-native-paper";
-import * as Yup from 'yup';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from "react-native";
+import { Portal, Snackbar } from "react-native-paper";
 import { AppContext } from '../AppContext';
 import { Idea } from '../../../types/DataStoreTypes';
-import { crudAddStyles } from '../shared/ApplicationStyles';
+import { Button } from '../shared/Buttons';
+import { TextField } from '../shared/TextField';
+import { colors, spacing } from '../shared/theme';
 import { createIdea } from './IdeasService';
 
 export function AddIdea({route, navigation }: any) {
@@ -23,68 +24,70 @@ export function AddIdea({route, navigation }: any) {
         }
     }, [])
 
-    const validationSchema = Yup.object().shape({
-        title: Yup.string().required(),
-        description: Yup.string().required()
-    });
-
     return (
-        <View>
-            <Formik
-                initialValues={ state.idea }
-                // validationSchema={validationSchema}
-                enableReinitialize={true}
-                onSubmit={async values => {
-                    if (!appContext.userInfo) {
-                        setState({ ...state, showError: true, errorMessage: 'Error saving your ideas.  Please login again.' })
-                    } else {
-                        
-                        let newIdea: Idea = { title: values.title, description: values.description };
-                        
-                        try {
-                            const docRef = await createIdea(appContext.userInfo.email, newIdea);
-                            newIdea.id = docRef.id
+        <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+                <Formik
+                    initialValues={ state.idea }
+                    enableReinitialize={true}
+                    onSubmit={async values => {
+                        if (!appContext.userInfo) {
+                            setState({ ...state, showError: true, errorMessage: 'Error saving your ideas.  Please login again.' })
+                        } else {
 
-                            appContext.ideas.push(newIdea);
-                            
-                        } catch (error) {
-                            console.error(error);
-                            
-                            setState({ ...state, showError: true, errorMessage: 'Error saving your ideas.' })
-                            return;
+                            let newIdea: Idea = { title: values.title, description: values.description };
+
+                            try {
+                                const docRef = await createIdea(appContext.userInfo.email, newIdea);
+                                newIdea.id = docRef.id
+
+                                appContext.ideas.push(newIdea);
+
+                            } catch (error) {
+                                console.error(error);
+
+                                setState({ ...state, showError: true, errorMessage: 'Error saving your ideas.' })
+                                return;
+                            }
+
+                            navigation.navigate('MyIdeas', { refreshContent: true });
                         }
-
-                        navigation.navigate('MyIdeas', { refreshContent: true });
-                    }
-                }}
-            >
-                {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-                    <View style={{ ...crudAddStyles.container }}>
-                        <TextInput
-                            style={{ ...crudAddStyles.input }}
-                            label="Title"
-                            mode="outlined"
-                            onChangeText={handleChange('title')}
-                            onBlur={handleBlur('title')}
-                            value={values.title}
-                        />
-                        {errors.title ? <Text>{errors.title}</Text> : null}
-                        <TextInput
-                            style={{ ...crudAddStyles.input, height: 80 }}
-                            label="Description"
-                            mode="outlined"
-                            multiline
-                            numberOfLines={3}
-                            onChangeText={handleChange('description')}
-                            onBlur={handleBlur('description')}
-                            value={values.description}
-                        />
-                        <Button mode="contained" onPress={handleSubmit as (e?: GestureResponderEvent) => void}>
-                            Submit
-                        </Button>
-                    </View>
-                )}
-            </Formik>
+                    }}
+                >
+                    {({ handleChange, handleBlur, handleSubmit, values, errors, isSubmitting }) => (
+                        <>
+                            <TextField
+                                testID="idea-title-input"
+                                label="Idea name"
+                                placeholder="e.g. Wool camp blanket"
+                                onChangeText={handleChange('title')}
+                                onBlur={handleBlur('title')}
+                                value={values.title}
+                                error={errors.title}
+                                returnKeyType="next"
+                            />
+                            <TextField
+                                testID="idea-description-input"
+                                label="Details"
+                                placeholder="Colour, size, where to find it…"
+                                multiline
+                                numberOfLines={3}
+                                onChangeText={handleChange('description')}
+                                onBlur={handleBlur('description')}
+                                value={values.description}
+                                error={errors.description}
+                            />
+                            <Button
+                                testID="save-idea-button"
+                                label={isSubmitting ? 'Saving…' : 'Save idea'}
+                                disabled={isSubmitting}
+                                onPress={() => handleSubmit()}
+                                style={styles.submit}
+                            />
+                        </>
+                    )}
+                </Formik>
+            </ScrollView>
             <Portal>
                 <Snackbar
                     visible={state.showError}
@@ -94,7 +97,21 @@ export function AddIdea({route, navigation }: any) {
                     {state.errorMessage}
                 </Snackbar>
             </Portal>
-        </View>
+        </KeyboardAvoidingView>
     )
 
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: colors.bgBase,
+    },
+    content: {
+        padding: spacing.screen,
+        gap: 20,
+    },
+    submit: {
+        marginTop: 4,
+    },
+});

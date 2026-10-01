@@ -1,63 +1,67 @@
-import { DeviceEventEmitter, Text, View } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ReactNode, useRef } from "react";
+import { Pressable, StyleSheet, Text } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
-import { List } from "react-native-paper";
+import { colors, radius } from "./theme";
 
-export enum SwipeableItemEvents {
-    DELETE_PRESS = "event.deletePress",
-    ITEM_PRESS = "event.itemPress"
+type Props = {
+    children: ReactNode,
+    onDelete: () => void,
+    deleteLabel?: string,
+    testID?: string,
 }
 
-// local only to this widget
-export type Props = {
-    id: string | undefined,
-    title: string,
-    description: string,
-    icon: string,    // icon of one of the following names from material community icons: https://pictogrammers.com/library/mdi/
-    data: any
-}
+// Swipe left to reveal a destructive (Rose) action.
+export function SwipeToDelete({ children, onDelete, deleteLabel = 'Delete', testID }: Props) {
+    const swipeableRef = useRef<Swipeable>(null);
 
-export function SwipeableItem({ id, title, description, icon, data }: Props) {
-
-    const rightSwipeActions = (progressAnimatedValue: any, dragAnimatedValue: any, swipeable: Swipeable) => {
-        return (
-            <View
-                style={{
-                    backgroundColor: '#ff8303',
-                    justifyContent: 'center',
-                    alignItems: 'flex-end',
-                }}
-            >
-                <Text
-                    onPress={() => {
-                        DeviceEventEmitter.emit(SwipeableItemEvents.DELETE_PRESS, swipeable);
-                    }}
-                    style={{
-                        color: '#1b1a17',
-                        fontWeight: '600',
-                        paddingHorizontal: 30,
-                        paddingVertical: 20,
-                    }}
-                >
-                    Delete
-                </Text>
-            </View>
-        );
-    };
-
+    const renderRightActions = () => (
+        <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={deleteLabel}
+            onPress={() => {
+                swipeableRef.current?.close();
+                onDelete();
+            }}
+            style={({ pressed }) => [styles.action, pressed ? styles.actionPressed : null]}
+        >
+            <MaterialCommunityIcons name="trash-can-outline" size={22} color={colors.danger} />
+            <Text style={styles.actionText}>{deleteLabel}</Text>
+        </Pressable>
+    );
 
     return (
-        <Swipeable key={id}
-                    id={id}
-                    renderRightActions={rightSwipeActions}
+        <Swipeable
+            ref={swipeableRef}
+            testID={testID}
+            renderRightActions={renderRightActions}
+            overshootRight={false}
+            containerStyle={styles.container}
         >
-            <List.Item
-                key={id}
-                title={title}
-                description={description}
-                left={props => <List.Icon {...props} icon={icon || "" } />}
-                id={id}
-                onPress={() => DeviceEventEmitter.emit(SwipeableItemEvents.ITEM_PRESS, data)}
-            />
+            {children}
         </Swipeable>
-    )
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        borderRadius: radius.card,
+    },
+    action: {
+        width: 96,
+        marginLeft: 8,
+        borderRadius: radius.card,
+        backgroundColor: colors.dangerMuted,
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 4,
+    },
+    actionPressed: {
+        opacity: 0.8,
+    },
+    actionText: {
+        color: colors.danger,
+        fontSize: 13,
+        fontWeight: '600',
+    },
+});

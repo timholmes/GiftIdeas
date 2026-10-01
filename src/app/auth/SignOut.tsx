@@ -1,20 +1,14 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { useEffect } from "react";
-import { Button, DeviceEventEmitter, View } from "react-native";
+import { DeviceEventEmitter, Pressable, Text } from "react-native";
 import { FirebaseUtils } from "../util/FirebaseUtils";
+import { colors } from "../shared/theme";
 
 
 export enum SignOutEvents {
     SIGN_OUT_COMPLETE = "event.onSignOut"
 }
 
-export default function SignOut({ signOutListener }: any) {
-
-    useEffect(() => {
-        // return () => {
-        //     DeviceEventEmitter.removeAllListeners(SignOutEvents.SIGN_OUT_COMPLETE);
-        // };
-    }, []);
+export default function SignOut() {
 
     function signOut() {
         console.log('signout method');
@@ -27,21 +21,31 @@ export default function SignOut({ signOutListener }: any) {
             GoogleSignin.signOut()
             .then(() => {
                 DeviceEventEmitter.emit(SignOutEvents.SIGN_OUT_COMPLETE, { success: true } );
-                // signOutListener(true, null);
             })
             .catch((e) => {
                 DeviceEventEmitter.emit(SignOutEvents.SIGN_OUT_COMPLETE, { success: false, error: e } );
-                // signOutListener(false, e)
                 console.error('Sign out failed.', e);
             });
         }
     }
 
     return (
-        <>
-            <View style={{ paddingEnd: 10 }}>
-            <Button title="Sign Out" onPress={signOut}></Button>
-            </View>
-        </>
+        <Pressable
+            testID="sign-out-button"
+            accessibilityRole="button"
+            onPress={signOut}
+            hitSlop={8}
+            style={({ pressed }) => ({
+                height: 36,
+                paddingHorizontal: 14,
+                borderRadius: 999,
+                borderWidth: 1,
+                borderColor: colors.border,
+                justifyContent: 'center',
+                backgroundColor: pressed ? colors.bgOverlay : 'transparent',
+            })}
+        >
+            <Text style={{ color: colors.textSecondary, fontSize: 15, fontWeight: '600' }}>Sign Out</Text>
+        </Pressable>
     )
 }

@@ -6,6 +6,31 @@ export enum FirestoreErrorCodes {
     PERMISSION_DENIED = 'permission-denied'
 }
 
+function getFunctionsErrorCode(error: unknown): string | undefined {
+    if (error && typeof error === 'object' && 'code' in error) {
+        return (error as { code: unknown }).code as string;
+    }
+    return undefined;
+}
+
+// Maps sendConnectionRequest failures to their required user-facing message.
+// The "functions/not-found" message is intentionally generic — it must not
+// confirm or deny that an account exists for the entered email (FR-004).
+export function getSendConnectionRequestErrorMessage(error: unknown): string {
+    switch (getFunctionsErrorCode(error)) {
+        case 'functions/failed-precondition':
+            return "You can't add yourself as a connection.";
+        case 'functions/already-exists':
+            return "You're already connected, or a request is already pending, with that email.";
+        case 'functions/not-found':
+            return "Couldn't send request. Please double-check the email and try again.";
+        case 'functions/invalid-argument':
+            return "Please enter a valid email address.";
+        default:
+            return "Something went wrong sending your request. Please try again.";
+    }
+}
+
 export async function sendConnectionRequest(targetEmail: string): Promise<{ status: 'pending' | 'connected' }> {
     const functions = FirebaseUtils.getFirestoreFunctions();
     const sendConnectionRequestFn = httpsCallable<{ targetEmail: string }, { status: 'pending' | 'connected' }>(functions, 'sendConnectionRequest');

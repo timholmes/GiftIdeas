@@ -5,7 +5,8 @@ appId: com.timdholmes.GiftIdeas
 - runFlow:
     file: subflows/setup-steps.yaml
 - tapOn: "Me"
-- tapOn: "My Ideas, tab, 2 of 4"
-- assertVisible: "\udb80\udf35 Weekend Cabin Gift Book a two-night cabin stay with hiking nearby."
-- assertVisible: "\udb80\udf35 Coffee Subscription Three-month small-batch coffee subscription."
-
+- tapOn: "My ideas, tab, 2 of 4"
+- assertVisible: "Weekend Cabin Gift"
+- assertVisible: "Book a two-night cabin stay with hiking nearby."
+- assertVisible: "Coffee Subscription"
+- assertVisible: "Three-month small-batch coffee subscription."

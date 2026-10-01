@@ -5,6 +5,6 @@ appId: com.timdholmes.GiftIdeas
 - runFlow:
     file: subflows/setup-steps.yaml
 - tapOn: "Me"
-- assertVisible: "Welcome, Me.\n"
+- assertVisible: "Hi, Me"
 - assertVisible: "To invite someone to your ideas, click below."
 - assertVisible: "Add"

@@ -4,25 +4,6 @@ import { AddIdea } from './AddIdea';
 import { renderWithAppContext } from '../test-utils/renderWithAppContext';
 
 jest.mock('react-native-paper', () => ({
-  Button: ({ onPress, children }: { onPress: () => void; children: React.ReactNode }) => {
-    const React = require('react');
-    const { Text, TouchableOpacity } = require('react-native');
-    return (
-      <TouchableOpacity onPress={onPress}>
-        <Text>{children}</Text>
-      </TouchableOpacity>
-    );
-  },
-  Text: ({ children }: { children: React.ReactNode }) => {
-    const React = require('react');
-    const { Text } = require('react-native');
-    return <Text>{children}</Text>;
-  },
-  TextInput: ({ value, onChangeText }: { value: string; onChangeText: (value: string) => void }) => {
-    const React = require('react');
-    const { TextInput } = require('react-native');
-    return <TextInput value={value} onChangeText={onChangeText} />;
-  },
   Portal: ({ children }: { children: React.ReactNode }) => {
     const React = require('react');
     const { View } = require('react-native');
@@ -67,7 +48,7 @@ describe('AddIdea', () => {
       }
     );
 
-    fireEvent.press(getByText('Submit'));
+    fireEvent.press(getByText('Save idea'));
 
     await waitFor(() => {
       expect(createIdea).toHaveBeenCalledWith(

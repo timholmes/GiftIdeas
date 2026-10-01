@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 
+// Used by the sign-in screens, which sit outside the Dusk theme (see theme.ts).
 export const siteStyles = StyleSheet.create({
     container: {
         flex: 1,
@@ -13,42 +14,3 @@ export const siteStyles = StyleSheet.create({
         alignContent: 'center'
     }
 })
-
-export const crudListStyles = StyleSheet.create({
-    ...siteStyles,
-    list: {
-        flexGrow: 1,
-    },
-    fabStyle: {
-        bottom: 0,
-        right: 16,
-        position: 'absolute',
-    },
-});
-
-export const crudAddStyles = StyleSheet.create({
-    container: {
-        margin: 10
-    },
-    input: {
-        margin: 5
-    }
-});
-
-export const homeStyles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    welcome: {
-        fontSize: 18
-    },
-    title: {
-        marginVertical: 8,
-        fontSize: 16
-    },
-    button: {
-        width: 100,
-        margin: 10,
-        alignContent: 'center'
-    }
-});

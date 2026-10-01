@@ -6,17 +6,12 @@ import { AppContext } from './AppContext';
 import { initialContext } from '../../types/SystemTypes';
 import { UseConnectionsResult } from './connections/useConnections';
 
-jest.mock('react-native-paper', () => {
-  const React = require('react');
-  const { Text, TouchableOpacity } = require('react-native');
-  return {
-    Button: ({ onPress, children }: { onPress: () => void; children: React.ReactNode }) => (
-      <TouchableOpacity onPress={onPress}>
-        <Text>{children}</Text>
-      </TouchableOpacity>
-    ),
-  };
-});
+jest.mock('./ideas/IdeasService', () => ({
+  findAllIdeas: jest.fn().mockResolvedValue([]),
+  findIdeasForConnections: jest.fn().mockResolvedValue([]),
+}));
+
+jest.mock('./auth/SignOut', () => () => null);
 
 jest.mock('./connections/useConnections', () => ({
   useConnections: jest.fn(),
@@ -124,7 +119,7 @@ describe('Home', () => {
       { userInfo }
     );
 
-    expect(getByText(/Welcome, Tim\./)).toBeTruthy();
+    expect(getByText(/Hi, Tim/)).toBeTruthy();
   });
 
   it('hides the prompt live when active connections cross from 0 to 1 without remounting (US3, FR-004)', () => {
