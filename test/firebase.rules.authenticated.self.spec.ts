@@ -56,7 +56,7 @@ describe("authenticated user security permissions", () => {
         const db = testEnv.authenticatedContext(MY_EMAIL, {email: MY_EMAIL}).firestore();
 
         const result = await assertFails(getDocs(collection(db, "users", USER_NOT_SHARING_WITH_ME_EMAIL, "ideas")))
-        expect(result.code).toBe('permission-denied' || 'PERMISSION_DENIED');
+        expect(['permission-denied', 'PERMISSION_DENIED']).toContain(result.code);
     });
 
     test("I can read others data sharing with me", async function () {
@@ -75,7 +75,7 @@ describe("authenticated user security permissions", () => {
         const db = testEnv.authenticatedContext(MY_EMAIL, {email: MY_EMAIL}).firestore();
 
         const result = await assertFails(getDocs(collection(db, "users", USER_SHARING_WITH_ME_EMAIL, "connectionRequests")));
-        expect(result.code).toBe('permission-denied' || 'PERMISSION_DENIED');
+        expect(['permission-denied', 'PERMISSION_DENIED']).toContain(result.code);
     });
 
     test("I cannot write directly to my own connection requests (Cloud Functions only)", async function () {
