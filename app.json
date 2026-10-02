@@ -3,35 +3,12 @@
     "name": "GiftIdeas",
     "slug": "GiftIdeas",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.timdholmes.GiftIdeas",
-      "googleServicesFile": "./GoogleService-Info.plist"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.timdholmes.GiftIdeas"
-    },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "@react-native-google-signin/google-signin"
-    ],
     "extra": {
       "eas": {
         "projectId": "b8390193-edb6-473c-902f-906b7c7e2367"
