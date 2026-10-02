@@ -75,6 +75,8 @@ export class FirebaseUtils {
   }
 
   static async setupUser(idToken: string | null | undefined): Promise<UserCredential> {
+    FirebaseUtils.initialize();
+
     if(FirebaseUtils.isLocal()) {
       console.log('Using Auth Emulator for sign-in');
       await FirebaseUtils.setupAuthEmulator();

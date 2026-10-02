@@ -73,9 +73,14 @@ export default function SignIn({ route, navigation}: any) {
     if(googleUser == null || !googleUser.idToken) {
       DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: false, error: new Error("Google returned an invalid response during sign in.") });
     } else {
-      await FirebaseUtils.setupUser(googleUser.idToken);
-      const user: User = buildUserFromGoogleUser(googleUser);
-      DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: true, userInfo: user});
+      try {
+        await FirebaseUtils.setupUser(googleUser.idToken);
+        const user: User = buildUserFromGoogleUser(googleUser);
+        DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: true, userInfo: user});
+      } catch (error: any) {
+        console.error('SignIn: Firebase setupUser failed.', error);
+        DeviceEventEmitter.emit(SignInEvents.SIGN_IN_COMPLETE, { success: false, error: error });
+      }
     }
   }
 
