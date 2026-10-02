@@ -11,7 +11,6 @@ import { MD3LightTheme, PaperProvider } from 'react-native-paper';
 import { AppContext } from './src/app/AppContext';
 import Home from './src/app/Home';
 import SignIn, { SignInEvents } from './src/app/auth/SignIn';
-import SignInStub from './src/app/auth/SignInStub';
 import { SignOutEvents } from './src/app/auth/SignOut';
 import ListConnections from './src/app/connections/ListConnections';
 import { useConnections } from './src/app/connections/useConnections';
@@ -37,7 +36,6 @@ function SignInStackScreen() {
   return (
     <SignInStack.Navigator>
       <SignInStack.Screen name="SignIn" component={SignIn} />
-      <SignInStack.Screen name="SignInStub" component={SignInStub} options={{ title: "Sign In Stub" }} />
     </SignInStack.Navigator>
   )
 }
@@ -201,7 +199,7 @@ export default function App() {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <StatusBar style={state.isSignedIn ? 'light' : 'auto'} />
           <NavigationContainer theme={state.isSignedIn ? navigationTheme : DefaultTheme}>
-            {FirebaseUtils.isLocal() && !state.isSignedIn && <SignInStackScreen />}
+            {!state.isSignedIn && <SignInStackScreen />}
             {state.isSignedIn && <MainTabs />}
           </NavigationContainer>
         </GestureHandlerRootView>
