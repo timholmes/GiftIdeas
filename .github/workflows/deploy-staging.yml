@@ -16,10 +16,11 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Install functions dependencies
-        working-directory: functions
+        # functions is an npm workspace (see root package.json) — installing
+        # from the repo root is what actually links its bin scripts into
+        # functions/node_modules/.bin; running `npm ci` again inside
+        # functions/ re-triggers the root postinstall before patch-package
+        # is linked and fails with "patch-package: not found".
         run: npm ci
 
       - name: Authenticate to Firebase
