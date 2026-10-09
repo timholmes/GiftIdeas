@@ -5,7 +5,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "dev": "npm run shell",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "npm run build && firebase deploy --only functions",
     "test": "mocha --reporter spec",
     "logs": "firebase functions:log"
   },

@@ -3,6 +3,10 @@ name: Deploy (production)
 on:
   workflow_dispatch: {}
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,15 +17,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-          cache: "npm"
 
-      - name: Install dependencies
-        # functions is an npm workspace (see root package.json) — installing
-        # from the repo root is what actually links its bin scripts into
-        # functions/node_modules/.bin; running `npm ci` again inside
-        # functions/ re-triggers the root postinstall before patch-package
-        # is linked and fails with "patch-package: not found".
-        run: npm ci
+      - name: Find latest successful CI run on main
+        id: ci_run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run_id=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow=ci.yml --branch=main --status=success --limit 1 --json databaseId --jq '.[0].databaseId')
+          if [ -z "$run_id" ]; then
+            echo "No successful CI run found for main" >&2
+            exit 1
+          fi
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+
+      - name: Download functions build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: functions-lib
+          path: functions/lib
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.ci_run.outputs.run_id }}
 
       - name: Authenticate to Firebase
         run: echo "$FIREBASE_SERVICE_ACCOUNT_PROD" > /tmp/gcp-key.json
